@@ -399,14 +399,16 @@ factory_client.register_template(
 // Code snippet coming soon
 ```
 
-### Iterable Mappings
-[View Source](../examples/intermediate/iterable-mappings)
+### Iterable Mapping (canonical)
+[View Source](../examples/intermediate/iterable-mapping)
 
 [Live Demo](https://soroban.stellar.org/docs)
 
 ```rust
 // Code snippet coming soon
 ```
+
+Companion example adding filtering, mapping, and reducing over the same pattern: [View Source](../examples/intermediate/iterable-mappings)
 
 ### Multi Sig Patterns
 [View Source](../examples/intermediate/multi-sig-patterns)
