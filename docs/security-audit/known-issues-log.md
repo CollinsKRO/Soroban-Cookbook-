@@ -52,7 +52,8 @@ maintainers per the contribution policy.
 - **Status:** Open
 - **Affects:** `examples/tokens/01-sep41-token`,
   `examples/tokens/09-optimized-token-ops`,
-  `examples/intermediate/03-priority-queue`
+  `examples/intermediate/03-priority-queue`,
+  `examples/defi/11-amm-price-oracle`
 
 **Description.** Each listed example contains a `src/test.rs`, but its `lib.rs`
 declares neither `mod test;` nor an inline `#[cfg(test)]` module. The test file
@@ -203,3 +204,4 @@ from the prep scan, to be confirmed or dismissed during the review:
 | 2026-06-02 | KI-1…KI-4 | Initial audit-prep baseline recorded. |
 | 2026-08-31 | KI-2, KI-5, KI-6 | Extended scope to `examples/tokens/`; added `09-optimized-token-ops` to KI-2; recorded missing READMEs (KI-5) and a stale category README (KI-6); added panic-path pointers for the newly in-scope examples. |
 | 2026-09-29 | KI-2 | Wired `mod test;` in `02-role-based-access-control` and `examples/basics/lazy-cache`; added `lazy-cache` to the workspace `members` (its README already documented `cargo test -p lazy_cache`). |
+| 2026-09-29 | KI-2 | Wired `mod test;` in `examples/defi/11-amm-price-oracle` and fixed missing imports in test.rs. |
