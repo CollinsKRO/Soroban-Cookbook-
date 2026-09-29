@@ -1,16 +1,22 @@
 [workspace]
 resolver = "2"
 
-# The `templates/*` directories intentionally contain their own Cargo
-# workspaces — each is a self-contained learner starter kit with its own
-# pinned `soroban-sdk`, meant to be copied out and built standalone. Because a
-# package cannot belong to two workspaces at once, they are excluded from the
-# root workspace rather than listed under `members`. Build them individually:
+# `templates/token-dapp` and `templates/dao-governance-dapp` intentionally
+# contain their own Cargo workspaces — each is a self-contained learner starter
+# kit with its own pinned `soroban-sdk`, meant to be copied out and built
+# standalone. Because a package cannot belong to two workspaces at once, they are
+# excluded from the root workspace rather than listed under `members`. Build them
+# individually:
 #
+#     cd templates/dao-governance-dapp && cargo build
 #     cd templates/token-dapp && cargo build
+#
+# `templates/nft-marketplace-dapp` is a single package (not a workspace) whose
+# contract library lives at `contracts/marketplace/src/lib.rs`. It is listed
+# under `members` below so `cargo build --workspace` and `cargo test --workspace`
+# build it with the workspace `soroban-sdk`, keeping it from rotting unnoticed.
 exclude = [
     "templates/dao-governance-dapp",
-    "templates/nft-marketplace-dapp",
     "templates/token-dapp",
 ]
 
