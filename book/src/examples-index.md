@@ -463,7 +463,7 @@ client.initialize(&admin_address);
 ```
 
 ### 03 Cross Contract Optimization
-[View Source](../examples/advanced/03-cross-contract-optimization)
+[View Source](../examples/advanced/25-cross-contract-optimization)
 
 [Live Demo](https://soroban.stellar.org/docs)
 
@@ -486,7 +486,7 @@ pub fn submit(env: Env, updater: Address, value: i128) -> Result<(), OracleError
 ```
 
 ### 03 Proxy Admin
-[View Source](../examples/advanced/03-proxy-admin)
+[View Source](../examples/advanced/31-proxy-admin)
 
 [Live Demo](https://soroban.stellar.org/docs)
 
@@ -499,7 +499,7 @@ pub fn deposit(env: Env, user: Address, amount: i128) -> Result<(), Error> {
 ```
 
 ### 03 Rbac Modifiers
-[View Source](../examples/advanced/03-rbac-modifiers)
+[View Source](../examples/advanced/32-rbac-modifiers)
 
 [Live Demo](https://soroban.stellar.org/docs)
 
@@ -508,7 +508,7 @@ client.grant_role(&admin, &ROLE_MINTER, &alice);
 ```
 
 ### 03 Registry Access Controls
-[View Source](../examples/advanced/03-registry-access-controls)
+[View Source](../examples/advanced/33-registry-access-controls)
 
 [Live Demo](https://soroban.stellar.org/docs)
 
