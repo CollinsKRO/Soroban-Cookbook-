@@ -16,6 +16,12 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  # actions-rust-lang/setup-rust-toolchain@v1 defaults its `rustflags` input to
+  # "-D warnings", which would turn the template's legitimate uses of the
+  # deprecated `Events::publish` API into hard errors. Set RUSTFLAGS here so the
+  # action's guard (`! -v RUSTFLAGS`) leaves our value alone. This matches the
+  # policy already used by .github/workflows/test.yml.
+  RUSTFLAGS: "-D warnings -A deprecated"
 
 jobs:
   token-dapp:
