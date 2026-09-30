@@ -12,7 +12,7 @@ Difficulty is relative to the basic examples: **Foundational** introduces the in
 
 | Order | Example | What it teaches | Difficulty | Prerequisites | Related docs |
 | --- | --- | --- | --- | --- | --- |
-| 1 | [Iterable mappings](./iterable-mappings/) | Enumerable maps with a maintained key index | Foundational | Storage, vectors, maps | [Storage types](../../docs/storage-types.md) |
+| 1 | [Iterable mapping](./iterable-mapping/) | Enumerable maps with a maintained key index | Foundational | Storage, vectors, maps | [Storage types](../../docs/storage-types.md) |
 | 2 | [Priority queue](./03-priority-queue/) | Heap-backed ordering and bounded collection operations | Foundational | Collections, validation | [Testing best practices](../../docs/testing-best-practices.md) |
 | 3 | [Event subscriptions](./event-subscriptions/) | Subscriber registration and event-driven contract coordination | Foundational | Authentication, events | [Common patterns](../../docs/common-patterns.md) |
 | 4 | [Event aggregation](./event-aggregation/) | Batching related actions into one event | Foundational | Events, collections | [Event filtering](../basics/14-event-filtering/) |
@@ -26,6 +26,10 @@ Difficulty is relative to the basic examples: **Foundational** introduces the in
 | 11 | [Lazy loading](./lazy-loading/) | Bounded caching and deferred reads for large state sets | Advanced | Persistent storage, pagination | [Gas benchmarks](../../docs/gas-benchmarks.md) |
 | 12 | [Storage pagination](./storage-pagination/) | Opaque cursors for stable, page-sized queries | Advanced | Persistent storage, collections | [Storage types](../../docs/storage-types.md) |
 | 13 | [Storage migration](./storage-migration/) | Staged, batched schema upgrades with rollback-friendly state | Advanced | Persistent storage, authorization | [Deployment guide](../../guides/deployment.md) |
+
+### Iterable Map Companion
+
+[`iterable-mappings`](./iterable-mappings/) is **not** a second entry point for the pattern above. It is a workspace member kept for its collection utilities — filtering, mapping, and reducing over an iterable map — which build directly on the canonical example. Work through `iterable-mapping` first.
 
 ## Related Learning Tracks
 
