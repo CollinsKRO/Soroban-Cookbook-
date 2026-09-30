@@ -326,10 +326,10 @@ if is_governor {
 
 ## Related Examples
 - `03-merkle-airdrop`: Basic Merkle proof verification
-- `05-merkle-proofs`: Advanced proof techniques
+- `21-merkle-proofs`: Advanced proof techniques
 - `01-multi-party-auth`: Multi-signature patterns
 - `03-registry-access-controls`: Registry management
-- `05-hierarchical-access-control`: Role-based permissions
+- `16-hierarchical-access-control`: Role-based permissions
 
 ## References
 - [Merkle Trees in Cryptography](https://en.wikipedia.org/wiki/Merkle_tree)

@@ -23,7 +23,7 @@
 //! - **Reentrancy** (`token_wrapper`, `examples/tokens/06-token-wrapper`):
 //!   a `MaliciousUnderlyingToken` test double (mirroring the
 //!   `MaliciousContract` pattern in
-//!   `examples/advanced/05-reentrancy-guard/src/test.rs`) whose `transfer`
+//! `examples/advanced/15-reentrancy-guard/src/test.rs`) whose `transfer`
 //!   calls back into `TokenWrapper::wrap` before the outer call returns.
 //!   Demonstrated and fixed as part of this issue — see
 //!   `SECURITY_REVIEW_TOKEN_EXAMPLES.md` for the finding and
@@ -50,15 +50,13 @@ fn setup_sep41(env: &Env) -> (Sep41TokenClient<'static>, Address, Address, Addre
 
     let token_id = env.register_contract(None, Sep41Token);
     let token = Sep41TokenClient::new(env, &token_id);
-    token
-        .initialize(
-            &admin,
-            &String::from_str(env, "Cookbook USD"),
-            &symbol_short!("CUSD"),
-            &2u32,
-            &1_000_000i128,
-        )
-        .unwrap();
+    token.initialize(
+        &admin,
+        &String::from_str(env, "Cookbook USD"),
+        &symbol_short!("CUSD"),
+        &2u32,
+        &1_000_000i128,
+    );
 
     (token, admin, alice, bob)
 }
@@ -156,9 +154,9 @@ fn mint_at_i128_max_then_overflow_is_rejected_cleanly() {
 
     // setup_sep41 gives admin an initial_supply of 1_000_000, so this single
     // mint brings total_supply to exactly i128::MAX.
-    token.mint(&admin, &alice, &(i128::MAX - 1_000_000)).unwrap();
+    token.mint(&admin, &alice, &(i128::MAX - 1_000_000));
     assert_eq!(token.balance(&alice), i128::MAX - 1_000_000);
-    assert_eq!(token.total_supply().unwrap(), i128::MAX);
+    assert_eq!(token.total_supply(), i128::MAX);
 
     // Any further mint must fail cleanly, not panic or silently wrap negative.
     assert_eq!(
@@ -166,7 +164,7 @@ fn mint_at_i128_max_then_overflow_is_rejected_cleanly() {
         Err(Ok(TokenError::ArithmeticOverflow))
     );
     assert_eq!(token.balance(&alice), i128::MAX - 1_000_000);
-    assert_eq!(token.total_supply().unwrap(), i128::MAX);
+    assert_eq!(token.total_supply(), i128::MAX);
 }
 
 #[test]
@@ -195,10 +193,10 @@ fn burn_of_exact_full_balance_zeroes_out_without_underflow() {
     let (token, admin, _alice, _bob) = setup_sep41(&env);
 
     let balance = token.balance(&admin);
-    let remaining = token.burn(&admin, &balance).unwrap();
+    let remaining = token.burn(&admin, &balance);
     assert_eq!(remaining, 0);
     assert_eq!(token.balance(&admin), 0);
-    assert_eq!(token.total_supply().unwrap(), 0);
+    assert_eq!(token.total_supply(), 0);
 
     assert_eq!(
         token.try_burn(&admin, &1),
@@ -217,7 +215,7 @@ fn total_supply_stays_consistent_with_balances_across_a_mint_burn_cycle() {
     token.transfer(&admin, &alice, &500_000);
     token.burn(&alice, &250_000);
 
-    let total_supply = token.total_supply().unwrap();
+    let total_supply = token.total_supply();
     let sum_of_balances = token.balance(&admin) + token.balance(&alice) + token.balance(&bob);
     assert_eq!(
         total_supply, sum_of_balances,
@@ -239,7 +237,7 @@ pub enum MaliciousKey {
 /// A hostile "underlying token" whose `transfer` calls back into
 /// `TokenWrapper::wrap` before returning — the attack `06-token-wrapper`'s
 /// `DataKey::Entered` guard exists to block. Mirrors the `MaliciousContract`
-/// pattern in `examples/advanced/05-reentrancy-guard/src/test.rs`.
+/// pattern in `examples/advanced/15-reentrancy-guard/src/test.rs`.
 #[contract]
 pub struct MaliciousUnderlyingToken;
 
@@ -247,7 +245,7 @@ pub struct MaliciousUnderlyingToken;
 impl MaliciousUnderlyingToken {
     /// `attacking`: whether `transfer` should try to reenter `wrap` (matches
     /// the `attack_type` parameter convention in
-    /// `05-reentrancy-guard/src/test.rs`'s `MaliciousContract::init`).
+    /// `15-reentrancy-guard/src/test.rs`'s `MaliciousContract::init`).
     pub fn init(env: Env, wrapper: Address, attacking: bool) {
         env.storage().instance().set(&MaliciousKey::Wrapper, &wrapper);
         env.storage().instance().set(&MaliciousKey::Attacking, &attacking);
@@ -323,12 +321,12 @@ fn wrap_succeeds_normally_against_a_non_reentrant_token() {
     let underlying = MaliciousUnderlyingTokenClient::new(&env, &underlying_id);
     underlying.init(&wrapper_id, &false); // attacking = false: behaves like a normal token
 
-    wrapper.initialize(&underlying_id).unwrap();
+    wrapper.initialize(&underlying_id);
 
     let alice = Address::generate(&env);
     underlying.set_balance(&alice, &1_000);
 
-    assert_eq!(wrapper.wrap(&alice, &400).unwrap(), 400);
+    assert_eq!(wrapper.wrap(&alice, &400), 400);
     assert_eq!(wrapper.balance(&alice), 400);
     assert_eq!(underlying.balance(&wrapper_id), 400);
     assert_eq!(underlying.balance(&alice), 600);
@@ -347,7 +345,7 @@ fn wrap_reentrancy_attack_is_blocked() {
     let underlying = MaliciousUnderlyingTokenClient::new(&env, &underlying_id);
     underlying.init(&wrapper_id, &true); // attacking = true
 
-    wrapper.initialize(&underlying_id).unwrap();
+    wrapper.initialize(&underlying_id);
 
     let alice = Address::generate(&env);
     underlying.set_balance(&alice, &1_000);

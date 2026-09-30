@@ -30,13 +30,13 @@ It focuses on four controls that teams usually layer together instead of treatin
 ## Build
 
 ```bash
-cd examples/advanced/05-bridge-security
+cd examples/advanced/17-bridge-security
 cargo build --target wasm32-unknown-unknown --release
 ```
 
 ## Test
 
 ```bash
-cd examples/advanced/05-bridge-security
+cd examples/advanced/17-bridge-security
 cargo test
 ```

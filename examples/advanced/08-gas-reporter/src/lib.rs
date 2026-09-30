@@ -1,12 +1,12 @@
-#c[cfg_attr(not(test), no_std]]
+#![cfg_attr(target_family = "wasm", no_std)]
 
 use soroban_sdk::Env;
 
 pub fn measure<F>(env: &Env, f: F) -> u64 where F: FnOnce(&Env) {
-    let b = env.budget();
-    b.reset();
+    let mut b = env.cost_estimate().budget();
+    b.reset_default();
     f(env);
-    b.get_instruction_count()
+    b.cpu_instruction_cost()
 }
 #[cfg(test)]
 mod test;

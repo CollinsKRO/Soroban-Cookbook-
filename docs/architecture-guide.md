@@ -167,7 +167,10 @@ A single contract address routes to many facet contracts based on function selec
 - **Pros:** Modular; bypass contract size limits; granular upgrades.
 - **Cons:** High complexity; careful storage layout management required.
 
-**Example:** `examples/advanced/06-diamond-pattern`
+**Examples:** 
+- **Canonical:** [`examples/advanced/06-diamond-pattern`](../examples/advanced/06-diamond-pattern/) — Full EIP-2535 adaptation with diamond-cut and loupe
+- **Security-focused:** [`examples/advanced/05-diamond-security`](../examples/advanced/05-diamond-security/) — Hardened with access controls and interface verification
+- **Router orchestration:** [`examples/advanced/05-diamond-facets`](../examples/advanced/05-diamond-facets/) — Atomic cross-facet operations
 
 ### No-Upgrade (Immutable)
 
