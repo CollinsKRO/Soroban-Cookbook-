@@ -52,7 +52,8 @@ maintainers per the contribution policy.
 - **Status:** Open
 - **Affects:** `examples/tokens/01-sep41-token`,
   `examples/tokens/09-optimized-token-ops`,
-  `examples/intermediate/03-priority-queue`
+  `examples/intermediate/03-priority-queue`  
+  ~~`examples/nfts/02-nft-metadata`~~ (fixed 2026-09-29)
 
 **Description.** Each listed example contains a `src/test.rs`, but its `lib.rs`
 declares neither `mod test;` nor an inline `#[cfg(test)]` module. The test file
@@ -224,3 +225,4 @@ from the prep scan, to be confirmed or dismissed during the review:
 | 2026-09-30 | KI-2 | Resolved the wiring gap in `examples/advanced/08-payment-channels`: restored a compiling `lib.rs`, `#[cfg(test)] mod test;`, 17 tests including auth regressions. |
 | 2026-09-30 | KI-2 | Resolved the wiring gap in `examples/advanced/08-computation-optimization` (#1193): added `lib.rs`, rewrote `src/test.rs`, added the crate to workspace members. |
 | 2026-09-29 | KI-2 | Wired `mod test;` in `02-role-based-access-control` and `examples/basics/lazy-cache`; added `lazy-cache` to the workspace `members` (its README already documented `cargo test -p lazy_cache`). |
+| 2026-09-29 | KI-2 | Wired `mod test;` in `examples/nfts/02-nft-metadata` to enable unit test execution. |
