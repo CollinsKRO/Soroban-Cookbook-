@@ -1,17 +1,20 @@
 [workspace]
 resolver = "2"
 
-# The `templates/*` directories intentionally contain their own Cargo
-# workspaces — each is a self-contained learner starter kit with its own
-# pinned `soroban-sdk`, meant to be copied out and built standalone. Because a
-# package cannot belong to two workspaces at once, they are excluded from the
-# root workspace rather than listed under `members`. Build them individually:
+# Some example directories intentionally contain their own Cargo workspaces.
+# These are self-contained learner kits or legacy examples meant to be built
+# standalone, so they cannot belong to the root workspace at the same time.
+# Build them individually instead:
 #
-#     cd templates/token-dapp && cargo build
+#     cd examples/governance/07-automatic-snapshot-triggers && cargo build
+#     cd examples/tokens/10-automatic-snapshot-triggers && cargo build
 exclude = [
     "templates/dao-governance-dapp",
     "templates/nft-marketplace-dapp",
     "templates/token-dapp",
+    "examples/governance/07-automatic-snapshot-triggers",
+    "examples/tokens/10-automatic-snapshot-triggers",
+    "tests/fuzz",
 ]
 
 members = [
@@ -20,6 +23,7 @@ members = [
     "examples/intermediate/event-aggregation",
     "examples/basics/01-hello-world",
     "examples/basics/06-validation-patterns",
+    "examples/basics/08-soroban-types",
     "examples/basics/13-collection-types",
     "examples/basics/13-compressed-storage",
     "examples/basics/13-queue-variants",
@@ -97,7 +101,6 @@ members = [
     "examples/governance/01-simple-voting",
     "examples/governance/02-token-voting",
     "examples/governance/06-timelock-governance",
-    "examples/governance/07-automatic-snapshot-triggers",
     "examples/governance/01-delegation-marketplace",
     "examples/governance/01-proposal-validation",
     "examples/intermediate/lazy-loading",
@@ -119,7 +122,6 @@ members = [
     "tests/integration",
     "tests/security",
     "tests/docs-audit",
-    "tests/fuzz",
 ]
 
 [workspace.package]
