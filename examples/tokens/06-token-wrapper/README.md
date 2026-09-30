@@ -43,7 +43,7 @@ pub fn wrap(env: Env, user: Address, amount: i128) -> Result<i128, WrapperError>
 
 `wrap`, `unwrap`, and `transfer` share a reentrancy guard (`DataKey::Entered`,
 following the same pattern as
-[`examples/advanced/05-reentrancy-guard`](../../advanced/05-reentrancy-guard/)).
+[`examples/advanced/15-reentrancy-guard`](../../advanced/15-reentrancy-guard/)).
 Without it, a hook-bearing or malicious `underlying` token's `transfer` (or
 even its read-only `balance`, checked by `unwrap` before the guard used to be
 set) could call back into `wrap` mid-flight and mint wrapped shares against

@@ -52,7 +52,6 @@ maintainers per the contribution policy.
 - **Status:** Open
 - **Affects:** `examples/tokens/01-sep41-token`,
   `examples/tokens/09-optimized-token-ops`,
-  `examples/intermediate/02-role-based-access-control`,
   `examples/intermediate/03-priority-queue`
 
 **Description.** Each listed example contains a `src/test.rs`, but its `lib.rs`
@@ -89,7 +88,7 @@ and `cargo test -p payment-channels` now runs 17 tests, including
 
 - **Type:** Tooling warning
 - **Status:** Open
-- **Affects:** `examples/advanced/04-cross-contract-integration-testing/Cargo.toml`
+- **Affects:** `examples/advanced/16-cross-contract-integration-testing/Cargo.toml`
 
 **Description.** A `[profile.*]` table is defined in a non-root package, which
 Cargo ignores in a workspace, emitting:
@@ -219,3 +218,4 @@ from the prep scan, to be confirmed or dismissed during the review:
 | 2026-09-30 | KI-2 | Resolved the same wiring gap in `examples/advanced/08-multicall` (#1191): real contract, `#[cfg(test)] mod test;`, suite runs under `cargo test -p multicall`. |
 | 2026-09-30 | KI-2 | Resolved the wiring gap in `examples/advanced/06-gas-optimization` (#1190): `#[cfg(test)] mod test;`, fixed stale auth setup, added `require_auth` regression tests. |
 | 2026-09-30 | KI-2 | Resolved the wiring gap in `examples/advanced/08-payment-channels`: restored a compiling `lib.rs`, `#[cfg(test)] mod test;`, 17 tests including auth regressions. |
+| 2026-09-29 | KI-2 | Wired `mod test;` in `02-role-based-access-control` and `examples/basics/lazy-cache`; added `lazy-cache` to the workspace `members` (its README already documented `cargo test -p lazy_cache`). |

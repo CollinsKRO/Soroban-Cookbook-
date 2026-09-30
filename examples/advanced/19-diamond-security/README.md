@@ -1,8 +1,10 @@
 # Diamond Security Pattern
 
-This example demonstrates how to implement a secure, multi-facet proxy pattern (similar to EIP-2535 Diamond Standard) in Soroban. It shows how to mitigate security risks associated with shared proxies, access controls, upgrade safety, and storage collisions.
+**A security-focused variant of the diamond pattern** that demonstrates how to harden multi-facet proxy systems against common attack vectors.
 
----
+> **Base Implementation**: This example focuses on security-specific concerns. For the canonical diamond pattern with full EIP-2535 functionality, see [`06-diamond-pattern`](../06-diamond-pattern/).
+
+This example shows how to mitigate security risks associated with shared proxies, access controls, upgrade safety, and storage collisions in diamond-based architectures.
 
 ## Security Challenges & Solutions
 
@@ -41,7 +43,7 @@ The Diamond pattern splits a contract's logic into multiple implementation contr
 ## Project Structure
 
 ```text
-examples/advanced/05-diamond-security/
+examples/advanced/19-diamond-security/
 ├── Cargo.toml
 ├── README.md
 └── src/
@@ -74,3 +76,11 @@ The tests cover:
 - Isolated storage isolation testing (verifying no collision on shared keys).
 - Facet removal and routing cleanup.
 - Admin upgrades.
+
+---
+
+## Related Examples
+
+- **[06-diamond-pattern](../06-diamond-pattern/)** — The canonical diamond implementation with full EIP-2535 functionality including diamond-cut operations and diamond-loupe introspection
+- **[05-diamond-facets](../05-diamond-facets/)** — Router orchestration patterns with inter-facet communication examples
+- **[BEST_PRACTICES.md](./BEST_PRACTICES.md)** — Detailed security best practices guide for diamond deployments

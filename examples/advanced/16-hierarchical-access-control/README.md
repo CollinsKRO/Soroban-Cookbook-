@@ -1,7 +1,28 @@
 # Hierarchical Access Control
 
+> **Note:** For learning RBAC patterns, start with [**03-rbac-modifiers**](../03-rbac-modifiers/) — the canonical RBAC example. This example demonstrates an **advanced hierarchical pattern** with role inheritance and dynamic permission management.
 
-This example demonstrates a hierarchical role-based access control (RACC) system with dynamic permissions for Soroban smart contracts. It implements a multi-tier role architecture, fine-grained permission checks, and secure runtime updates.
+This example demonstrates a hierarchical role-based access control (RBAC) system with dynamic permissions for Soroban smart contracts. It implements a multi-tier role architecture, fine-grained permission checks, and secure runtime updates.
+
+## What This Example Adds
+
+This example extends the canonical RBAC pattern with **role hierarchy and permission inheritance**:
+
+- **Role Hierarchy**: ADMIN → MANAGER → OPERATOR (each inherits permissions from roles below)
+- **Dynamic Permissions**: Permissions can be granted/revoked from roles at runtime
+- **Permission System**: Fine-grained checks (MANAGE_ROLES, MANAGE_PERMS, MANAGE_RES, USE_RES)
+- **Inheritance**: Higher roles automatically inherit permissions from lower roles
+
+**When to use this pattern:**
+- ✅ You need roles that inherit permissions from other roles
+- ✅ You want to dynamically add/remove permissions without redeploying
+- ✅ You need fine-grained permission checks beyond simple role membership
+- ✅ You're building complex organizational hierarchies
+
+**When to use the canonical pattern instead:**
+- 🔄 Simple role membership checks are sufficient
+- 🔄 You don't need permission inheritance
+- 🔄 Your roles have fixed, unchanging capabilities
 
 ## 🌖 What You'll Learn
 
@@ -130,3 +151,12 @@ soroban contract deploy \
   --source alice \
   --network testnet
 ```
+
+
+## Related Examples
+
+- **[03-rbac-modifiers](../03-rbac-modifiers/)** — **Canonical RBAC pattern** with composable guards and flexible roles (start here before adding hierarchy)
+- [02-role-based-access-control](../../intermediate/02-role-based-access-control/) — Simple RBAC with numeric hierarchy
+- [access-control](../../intermediate/access-control/) — Combined RBAC + Multisig + Timelock
+- [03-registry-access-controls](../03-registry-access-controls/) — Registry-specific access controls
+- [01-multi-party-auth](../01-multi-party-auth/) — N-of-N and M-of-N authorization patterns

@@ -2,6 +2,8 @@
 
 Multi-facet proxy patterns (commonly known as the Diamond Pattern or EIP-2535) are powerful architectural designs for smart contracts. They allow developers to bypass contract size limits, organize code into modular components (facets), and upgrade specific functionalities without altering the main entrypoint address.
 
+> **Base Implementation**: For the canonical diamond pattern implementation with full EIP-2535 functionality, see [`06-diamond-pattern`](../06-diamond-pattern/). This guide focuses on security-specific concerns.
+
 However, the delegation of execution to external facets introduces unique security risk vectors. This guide outlines the core security practices for designing, implementing, and maintaining secure Diamond proxy structures on Soroban.
 
 ---
