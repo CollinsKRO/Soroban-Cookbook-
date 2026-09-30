@@ -68,6 +68,7 @@ members = [
     "examples/advanced/05-rate-limiting",
     "examples/advanced/28-merkle-airdrop",
     "examples/advanced/06-gas-optimization",
+    "examples/advanced/06-price-oracle",
     "examples/advanced/07-upgrade-patterns",
     "examples/advanced/08-payment-channels",
     "examples/advanced/08-gas-reporter",
