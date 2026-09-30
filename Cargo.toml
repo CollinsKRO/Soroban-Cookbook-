@@ -68,6 +68,7 @@ members = [
     "examples/advanced/04-upgradeable-proxy",
     "examples/advanced/contract-registry",
     "examples/advanced/08-multicall",
+    "examples/advanced/08-batch-operations",
     "examples/advanced/05-rate-limiting",
     "examples/advanced/28-merkle-airdrop",
     "examples/advanced/06-gas-optimization",
