@@ -75,6 +75,7 @@ members = [
     "examples/advanced/06-price-oracle",
     "examples/advanced/07-upgrade-patterns",
     "examples/advanced/08-payment-channels",
+    "examples/advanced/08-computation-optimization",
     "examples/advanced/08-gas-reporter",
     "examples/advanced/09-fuzz-testing",
     "examples/advanced/09-storage-optimization",
