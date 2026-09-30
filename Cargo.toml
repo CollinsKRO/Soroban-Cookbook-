@@ -67,6 +67,7 @@ members = [
     "examples/advanced/12-oracle-consumer/settlement",
     "examples/advanced/18-diamond-facets",
     "examples/advanced/06-diamond-pattern",
+    "examples/advanced/20-batch-transfer",
     "examples/defi/01-simple-swap",
     "examples/defi/02-constant-product-amm",
     "examples/defi/03-lending-pool",
