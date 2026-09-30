@@ -82,6 +82,10 @@ if any `require_auth` call is removed.
 contract was restored with the same design, `#[cfg(test)] mod test;` was added,
 and `cargo test -p payment-channels` now runs 17 tests, including
 `require_auth` regression tests.
+`examples/advanced/08-computation-optimization` had no `lib.rs`, a garbled
+`src/test.rs`, and was not a workspace member. It now has a real contract
+wired with `#[cfg(test)] mod test;`, is listed in the workspace `members`, and
+`cargo test -p computation-optimization` runs its suite.
 
 ---
 
@@ -219,3 +223,4 @@ from the prep scan, to be confirmed or dismissed during the review:
 | 2026-09-30 | KI-2 | Resolved the same wiring gap in `examples/advanced/08-multicall` (#1191): real contract, `#[cfg(test)] mod test;`, suite runs under `cargo test -p multicall`. |
 | 2026-09-30 | KI-2 | Resolved the wiring gap in `examples/advanced/06-gas-optimization` (#1190): `#[cfg(test)] mod test;`, fixed stale auth setup, added `require_auth` regression tests. |
 | 2026-09-30 | KI-2 | Resolved the wiring gap in `examples/advanced/08-payment-channels`: restored a compiling `lib.rs`, `#[cfg(test)] mod test;`, 17 tests including auth regressions. |
+| 2026-09-30 | KI-2 | Resolved the wiring gap in `examples/advanced/08-computation-optimization` (#1193): added `lib.rs`, rewrote `src/test.rs`, added the crate to workspace members. |
