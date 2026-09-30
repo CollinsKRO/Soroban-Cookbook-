@@ -73,6 +73,10 @@ compilation drift the now-compiled tests reveal). Left for the maintainers.
 **Resolved instances.** `examples/advanced/08-multicall` had the same gap
 (placeholder `lib.rs`/`test.rs`). It now ships a real contract whose `lib.rs`
 declares `#[cfg(test)] mod test;`, and `cargo test -p multicall` runs its suite.
+`examples/advanced/06-gas-optimization` had a complete `src/test.rs` that
+`lib.rs` never declared. Once wired, 16 of its 22 tests failed because admin
+calls ran before `mock_all_auths()`. The setup is fixed, and new tests now fail
+if any `require_auth` call is removed.
 
 ---
 
@@ -208,3 +212,4 @@ from the prep scan, to be confirmed or dismissed during the review:
 | 2026-06-02 | KI-1…KI-4 | Initial audit-prep baseline recorded. |
 | 2026-08-31 | KI-2, KI-5, KI-6 | Extended scope to `examples/tokens/`; added `09-optimized-token-ops` to KI-2; recorded missing READMEs (KI-5) and a stale category README (KI-6); added panic-path pointers for the newly in-scope examples. |
 | 2026-09-30 | KI-2 | Resolved the same wiring gap in `examples/advanced/08-multicall` (#1191): real contract, `#[cfg(test)] mod test;`, suite runs under `cargo test -p multicall`. |
+| 2026-09-30 | KI-2 | Resolved the wiring gap in `examples/advanced/06-gas-optimization` (#1190): `#[cfg(test)] mod test;`, fixed stale auth setup, added `require_auth` regression tests. |
