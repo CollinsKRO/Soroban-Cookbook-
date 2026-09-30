@@ -12,6 +12,7 @@ exclude = [
     "templates/dao-governance-dapp",
     "templates/nft-marketplace-dapp",
     "templates/token-dapp",
+    "tests/fuzz",
 ]
 
 members = [
@@ -119,7 +120,6 @@ members = [
     "tests/integration",
     "tests/security",
     "tests/docs-audit",
-    "tests/fuzz",
 ]
 
 [workspace.package]
