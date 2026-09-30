@@ -20,7 +20,6 @@ A full-stack digital collectible and marketplace template on Stellar using Sorob
 nft-marketplace-dapp/
 ├── contracts/
 │   └── marketplace/
-│       ├── Cargo.toml
 │       └── src/
 │           ├── lib.rs       # NFT & Marketplace contract logic
 │           └── test.rs      # Unit test suite
@@ -32,7 +31,7 @@ nft-marketplace-dapp/
 │       └── styles.css       # Dark-mode marketplace styling
 ├── scripts/
 │   └── deploy.sh            # Automated deployment script
-├── Cargo.toml               # Rust workspace configuration
+├── Cargo.toml               # Rust package configuration
 └── README.md                # Project documentation
 ```
 

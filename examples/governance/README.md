@@ -15,7 +15,7 @@ A marketplace for listing and renting voting power with incentive mechanisms.
 | 01 | [simple-voting](./01-simple-voting/) | Proposal creation, one-address-one-vote, time-based deadlines, vote tallying, execution |
 | 02 | [voting-time-constraints](./01-voting-time-constraints/) | Voting periods, proposal deadlines, grace periods, early closure |
 | 06 | [timelock-governance](./06-timelock-governance/) | Proposal queue, mandatory delays, veto, emergency execution |
-| 07 | [automatic-snapshot-triggers](./07-automatic-snapshot-triggers/) | Time-based & event-based snapshots, snapshot pruning, gas-efficient storage |
+| 07 | [automatic-snapshot-triggers](./07-automatic-snapshot-triggers/) | Time-based & event-based snapshots, snapshot pruning, gas-efficient storage. **Cross-domain pattern:** [`defi/14`](../defi/14-automatic-snapshot-triggers/), [`tokens/10`](../tokens/10-automatic-snapshot-triggers/), [`nfts/05`](../nfts/05-automatic-snapshot-triggers/) |
 ```bash
 cd examples/governance/01-simple-voting
 cargo test && cargo build --target wasm32-unknown-unknown --release

@@ -1,61 +1,37 @@
 # Beacon Proxy Factory
 
-> **Phase 5 — Issue #206** · Advanced Soroban Patterns
+Factory-managed beacon proxies with shared upgrades. One beacon controls many proxy instances.
 
-A factory contract that deploys and manages a fleet of proxy contracts, all sharing
-a single beacon — enabling atomic O(1) upgrades across every deployed proxy in a
-single transaction.
+## Role in Learning Path
 
-## Architecture
+This is the **second step** in the [upgrade patterns learning path](../README.md#upgrade-patterns--proxy-patterns). After learning basic beacons, this example shows:
+- Factory pattern for deploying proxy instances
+- One beacon serving many proxies
+- Batch upgrades of all proxies at once
+- Cost-efficient multi-proxy management
+- Decoupling proxy deployment from implementation
 
-```
-                ┌────────────────────────────────────────────┐
-                │           BeaconProxyFactory               │
-                │  - deploys Beacon on init                  │
-                │  - deploys Proxy instances on demand       │
-                │  - tracks all deployed proxies             │
-                │  - single upgrade call updates all proxies │
-                └──────────────────┬─────────────────────────┘
-                                   │ owns
-                                   ▼
-                ┌────────────────────────────────┐
-                │         Beacon Contract        │
-                │   (single impl pointer)        │
-                └──────────────┬─────────────────┘
-                               │ upgrade propagates to ↓
-                ┌──────────────┼──────────────────┐
-                ▼              ▼                  ▼
-          ┌──────────┐  ┌──────────┐       ┌──────────┐
-          │ Proxy #0 │  │ Proxy #1 │  ...  │ Proxy #N │
-          └────┬─────┘  └────┬─────┘       └────┬─────┘
-               │             │                   │
-               └─────────────┴───────────────────┘
-                             │ all resolve to
-                             ▼
-                ┌────────────────────────┐
-                │  Implementation Vn     │
-                │  (actual logic)        │
-                └────────────────────────┘
-```
+**Prerequisites:** Start with [`02-beacon-proxy`](../02-beacon-proxy/) to understand beacon basics.
 
-## Contracts
+**Next steps:**
+- **[`03-proxy-admin`](../03-proxy-admin/)** — Add governance and safety checks
+- **[`04-upgradeable-proxy`](../04-upgradeable-proxy/)** — Alternative pattern: storage in proxy
+- **[`06-beacon-management`](../06-beacon-management/)** — Versioned implementations with rollback
+- **[`07-upgrade-patterns`](../07-upgrade-patterns/)** — Complete upgrade strategies
 
-| Contract | File | Role |
-|---|---|---|
-| `BeaconProxyFactory` | `factory.rs` | Top-level orchestrator — deploys, tracks, and upgrades |
-| `BeaconContract` | `beacon.rs` | Single source-of-truth for the current implementation address |
-| `ProxyContract` | `proxy.rs` | Thin delegation layer — queries beacon on every call |
-| `ImplV1` | `implementation_v1.rs` | Initial implementation: `add`, `sub`, counter |
-| `ImplV2` | `implementation_v2.rs` | Upgraded implementation: adds `mul`, `reset` |
+## Key Concepts
 
-## Key features
+- Factory-based proxy creation
+- Beacon-mediated implementation sharing
+- Atomic multi-proxy upgrades
+- Cost optimization for multiple instances
+- Shared upgrade governance
 
-### Deploy multiple proxies
+## Pattern Progression
+
+**Basic beacon → Beacon factory → Governance → Direct upgrade → Versioning → Full patterns**
 
 ```rust
-// Deploy a single proxy.
-let proxy_addr = factory.deploy_proxy(&deployer);
-
 // Deploy 5 proxies in one transaction (batch gas optimisation).
 let proxy_addrs = factory.batch_deploy(&deployer, &5u32);
 ```
@@ -179,6 +155,12 @@ cargo test -p beacon-proxy-factory
 
 ## Related examples
 
-- [`02-beacon-proxy`](../02-beacon-proxy/) — single beacon + single proxy; start here
-- [`06-beacon-management`](../06-beacon-management/) — multiple named beacons in one contract
+- **Sequence step 4 of 6:** follows [Beacon Proxy](../02-beacon-proxy/) and
+    demonstrates factory deployment of multiple proxies sharing one beacon.
+- **In scope:** deploying and tracking a proxy fleet with one shared beacon.
+- **Out of scope:** managing multiple independent named beacons; continue to
+    [Beacon Management](../06-beacon-management/).
+- [Next: Beacon Management](../06-beacon-management/) — versioned, named beacons with rollback
 - [`intermediate/ajo-factory`](../../intermediate/ajo-factory/) — factory deployer pattern
+
+See the [advanced examples README](../README.md) for the full upgrade patterns learning path.

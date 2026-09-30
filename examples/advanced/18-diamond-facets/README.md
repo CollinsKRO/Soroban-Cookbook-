@@ -1,8 +1,14 @@
-# 05 — Diamond Facets
+# Diamond Facets — Router Orchestration Pattern
 
-Demonstrates the Diamond / multi-facet architecture pattern on Soroban.
+**A facet-organization focused variant of the diamond pattern** that demonstrates router orchestration and inter-facet communication patterns.
+
+> **Base Implementation**: This example focuses on facet coordination and cross-facet operations. For the canonical diamond pattern with full EIP-2535 functionality, see [`06-diamond-pattern`](../06-diamond-pattern/).
+
+Demonstrates the Diamond / multi-facet architecture pattern on Soroban, extended with full **loupe-style introspection** so callers can discover which facets are registered and which selectors each facet exposes at runtime.
 
 ## Concepts
+
+This example emphasizes **facet coordination and orchestration** — how a diamond router can atomically coordinate multiple facets in a single transaction.
 
 | Concept | Description |
 |---------|-------------|
@@ -54,11 +60,15 @@ DataKey::RegOwner(key)          ← RegistryFacet only
 
 ## Inter-Facet Communication
 
+The key differentiator of this example is demonstrating **atomic cross-facet operations**:
+
 ```rust
 // Router atomically calls TokenFacet then RegistryFacet.
 // If either fails, the whole transaction reverts.
 router.mint_and_register(&admin, &recipient, &750, &key, &"metadata");
 ```
+
+This pattern is essential for complex diamond architectures where operations span multiple facets but must maintain transactional atomicity.
 
 ## How to Run
 
@@ -72,3 +82,8 @@ cargo clippy -p diamond-facets --all-targets -- -D warnings
 # WASM release build
 cargo build -p diamond-facets --target wasm32-unknown-unknown --release
 ```
+
+## Related Examples
+
+- **[06-diamond-pattern](../06-diamond-pattern/)** — The canonical diamond implementation with full EIP-2535 functionality including dynamic diamond-cut operations and comprehensive diamond-loupe introspection
+- **[05-diamond-security](../05-diamond-security/)** — Security-hardened variant with access controls, interface verification, and upgrade safeguards

@@ -17,8 +17,8 @@ Difficulty is relative to the basic examples: **Foundational** introduces the in
 | 3 | [Event subscriptions](./event-subscriptions/) | Subscriber registration and event-driven contract coordination | Foundational | Authentication, events | [Common patterns](../../docs/common-patterns.md) |
 | 4 | [Event aggregation](./event-aggregation/) | Batching related actions into one event | Foundational | Events, collections | [Event filtering](../basics/14-event-filtering/) |
 | 5 | [Event history](./event-history/) | Persistent audit history with filtering and pagination | Intermediate | Events, persistent storage | [Security best practices](../../docs/security-best-practices.md) |
-| 6 | [Role-based access control](./02-role-based-access-control/) | Role hierarchies, grants, revocation, and protected actions | Intermediate | Authentication, events | [Authentication](../basics/03-authentication/) |
-| 7 | [Access control guide](./access-control/) | Combined RBAC, multisig, and timelock with threat models | Intermediate | RBAC, multisig, timelock | [Governance & Auth Patterns](../../docs/governance-rbac-multisig-timelock.md) |
+| 6 | [Role-based access control](./02-role-based-access-control/) | Numeric role hierarchy (Owner/Admin/Moderator/User) | Intermediate | Authentication, events | [**Canonical RBAC** (03-rbac-modifiers)](../advanced/03-rbac-modifiers/) |
+| 7 | [Access control guide](./access-control/) | Combined RBAC, multisig, and timelock governance | Intermediate | RBAC, multisig, timelock | [Governance & Auth Patterns](../../docs/governance-rbac-multisig-timelock.md) |
 | 8 | [Pause and unpause](./03-pause-unpause/) | Emergency controls for sensitive contract operations | Intermediate | Authentication, RBAC | [Token pause permissions](../tokens/10-pausable-permissions/) |
 | 8 | [Multi-sig patterns](./multi-sig-patterns/) | Threshold approvals and multi-party authorization | Intermediate | Authentication, RBAC | [Multi-sig reference](./multi-sig-patterns/QUICK_REFERENCE.md) |
 | 9 | [Ajo](./ajo/) | A rotating savings group with member and contribution rules | Intermediate | Authentication, storage, events | [Token examples](../tokens/) |
