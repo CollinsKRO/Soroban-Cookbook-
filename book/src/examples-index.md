@@ -917,7 +917,3 @@ pub fn wrap(env: Env, user: Address, amount: i128) -> Result<i128, WrapperError>
 }
 ```
 
-## Storage
-
-## Hello-world
-
