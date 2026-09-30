@@ -84,9 +84,9 @@ Benchmark script: `./scripts/benchmark.sh examples/intermediate --output-dir gas
 | `02-timelock` | `execute` | ~40,000 | ~2 KB | Delay validation + state transition |
 | `03-cross-chain-bridge` | `lock` | ~55,000 | ~3 KB | Mint + storage update + event |
 | `03-cross-chain-bridge` | `release` | ~60,000 | ~3.5 KB | Validator set verification + burn |
-| `05-bridge-security` | `rate_limited_release` | ~50.000 | ~2.5 KB | Epoch check + volume accounting |
-| `05-reentrancy-guard` | `guarded_call` | ~30,000 | ~1.5 KB | Mutex flag adds ~5K  over bare call |
-| `05-merkle-proofs` | `verify_proof` (depth 10) | ~45,000 | ~2 KB | Each hash adds ~4K instructions |
+| `17-bridge-security` | `rate_limited_release` | ~50.000 | ~2.5 KB | Epoch check + volume accounting |
+| `15-reentrancy-guard` | `guarded_call` | ~30,000 | ~1.5 KB | Mutex flag adds ~5K  over bare call |
+| `21-merkle-proofs` | `verify_proof` (depth 10) | ~45,000 | ~2 KB | Each hash adds ~4K instructions |
 | `05-batch-operations` | `execute_batch` (5 ops) | ~120,000 | ~6 KB | Scales linearly; batch overhead ~20K base |
 | `06-diamond-pattern` | `diamond_cut` (add facet) | ~65,000 | ~4 KB | Selector registration + storage write |
 | `06-diamond-pattern` | `diamond_call` | ~35,000 | ~2 KB | Dispatch overhead ~5K  over direct call |

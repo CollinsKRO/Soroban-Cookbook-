@@ -41,7 +41,9 @@
 ## Advanced (3 examples)
 - [Multi-party auth](./examples/advanced.md)
 - [Oracle Pattern](./examples/oracle-pattern.md)
-- [Diamond Security](./examples/advanced/05-diamond-security/README.md)
+- [Diamond Pattern (canonical)](./examples/advanced/06-diamond-pattern/README.md)
+- [Diamond Security (security-focused)](./examples/advanced/19-diamond-security/README.md)
+- [Diamond Facets (router orchestration)](./examples/advanced/18-diamond-facets/README.md)
 
 # Use Cases
 

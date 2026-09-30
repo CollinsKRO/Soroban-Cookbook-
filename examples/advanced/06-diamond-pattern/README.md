@@ -1,6 +1,10 @@
-# Diamond Pattern Base (EIP-2535 Soroban Adaptation)
+# Diamond Pattern (EIP-2535 Soroban Adaptation)
 
-A fully dynamic, introspectable diamond routing system for Soroban — the on-chain equivalent of EIP-2535.
+**The canonical diamond pattern implementation for Soroban** — a fully dynamic, introspectable diamond routing system that adapts the EIP-2535 Diamond Standard to Soroban's architecture.
+
+> **Specialized Variants**: This is the base diamond implementation. For specialized use cases, see:
+> - [`05-diamond-security`](../05-diamond-security/) — Security-hardened variant with access controls, interface verification, and upgrade safeguards
+> - [`05-diamond-facets`](../05-diamond-facets/) — Router orchestration patterns with inter-facet communication examples
 
 ## What You'll Learn
 
@@ -113,6 +117,8 @@ token_client.tf_mint(&minter, &recipient, &1_000i128);
 - **Namespace isolation**: The `DataKey` enum guarantees that facet A's storage is never readable or writable by facet B, eliminating cross-facet storage corruption.
 - **Facet pruning**: `Remove` automatically drops facets with no remaining selectors from the global list, keeping the loupe data accurate.
 
+> **For Production Use**: See [`05-diamond-security`](../05-diamond-security/) for additional security patterns including direct-call protection, pre-flight interface verification, and advanced upgrade safeguards.
+
 ## Testing
 
 ```bash
@@ -137,3 +143,8 @@ cargo build -p diamond-pattern
 # WASM (for on-chain deployment)
 cargo build --target wasm32-unknown-unknown --release -p diamond-pattern
 ```
+
+## Related Examples
+
+- **[05-diamond-security](../05-diamond-security/)** — Security-focused diamond implementation with access control per facet, storage collision prevention via namespaced storage API, and upgrade safeguards with interface verification
+- **[05-diamond-facets](../05-diamond-facets/)** — Demonstrates router orchestration patterns, showing how to coordinate multiple facets (Token, Access, Registry) in atomic cross-facet operations
