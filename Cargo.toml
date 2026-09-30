@@ -12,6 +12,7 @@ exclude = [
     "templates/dao-governance-dapp",
     "templates/nft-marketplace-dapp",
     "templates/token-dapp",
+    "tests/fuzz",
 ]
 
 members = [
@@ -111,6 +112,7 @@ members = [
     "examples/advanced/12-real-world-case-studies",
     "examples/advanced/13-virtual-channel",
     "examples/advanced/14-bridge-monitor",
+    "examples/advanced/14-bridge-validators",
     "examples/defi/07-staking-pool",
     "examples/defi/10-swap-liquidity",
     "examples/defi/11-amm-price-oracle",
@@ -119,7 +121,6 @@ members = [
     "tests/integration",
     "tests/security",
     "tests/docs-audit",
-    "tests/fuzz",
 ]
 
 [workspace.package]
