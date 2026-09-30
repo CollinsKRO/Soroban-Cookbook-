@@ -70,6 +70,10 @@ four examples, while their sibling examples (e.g. `mint-burn`,
 **Suggested remediation.** Add `mod test;` to each `lib.rs` (and fix any
 compilation drift the now-compiled tests reveal). Left for the maintainers.
 
+**Resolved instances.** `examples/advanced/08-multicall` had the same gap
+(placeholder `lib.rs`/`test.rs`). It now ships a real contract whose `lib.rs`
+declares `#[cfg(test)] mod test;`, and `cargo test -p multicall` runs its suite.
+
 ---
 
 ## KI-3 — Non-root `[profile]` table is ignored (cargo warning)
@@ -203,5 +207,6 @@ from the prep scan, to be confirmed or dismissed during the review:
 | --- | --- | --- |
 | 2026-06-02 | KI-1…KI-4 | Initial audit-prep baseline recorded. |
 | 2026-08-31 | KI-2, KI-5, KI-6 | Extended scope to `examples/tokens/`; added `09-optimized-token-ops` to KI-2; recorded missing READMEs (KI-5) and a stale category README (KI-6); added panic-path pointers for the newly in-scope examples. |
+| 2026-09-30 | KI-2 | Resolved the same wiring gap in `examples/advanced/08-multicall` (#1191): real contract, `#[cfg(test)] mod test;`, suite runs under `cargo test -p multicall`. |
 | 2026-09-29 | KI-2 | Wired `mod test;` in `02-role-based-access-control` and `examples/basics/lazy-cache`; added `lazy-cache` to the workspace `members` (its README already documented `cargo test -p lazy_cache`). |
 | 2026-09-29 | KI-2 | Wired `mod test;` in `examples/nfts/02-nft-metadata` to enable unit test execution. |
