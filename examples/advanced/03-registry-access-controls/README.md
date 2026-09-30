@@ -35,6 +35,6 @@ See `src/lib.rs` for the contract and `src/test.rs` for tests.
 ## Related Examples
 
 - **[03-rbac-modifiers](../03-rbac-modifiers/)** — **Canonical RBAC pattern** with composable guards (use for general access control)
-- [05-hierarchical-access-control](../05-hierarchical-access-control/) — Advanced RBAC with permission inheritance
+- [16-hierarchical-access-control](../16-hierarchical-access-control/) — Advanced RBAC with permission inheritance
 - [02-role-based-access-control](../../intermediate/02-role-based-access-control/) — Simple RBAC with numeric hierarchy
 - [03-merkle-whitelist](../03-merkle-whitelist/) — Alternative whitelist approach using Merkle proofs

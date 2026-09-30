@@ -142,4 +142,4 @@ cargo build --target wasm32v1-none --release -p access-control
 - [`02-role-based-access-control`](../02-role-based-access-control/) — Basic RBAC with numeric hierarchy
 - [`multi-sig-patterns`](../multi-sig-patterns/) — Multi-party authorization patterns
 - [`02-timelock`](../../advanced/02-timelock/) — Time-delayed execution patterns
-- [05-hierarchical-access-control](../../advanced/05-hierarchical-access-control/) — RBAC with dynamic permissions
+- [16-hierarchical-access-control](../../advanced/16-hierarchical-access-control/) — RBAC with dynamic permissions

@@ -205,7 +205,7 @@ Beacon pattern where multiple proxy contracts point to a single beacon contract 
 ## 9. Role-Based Access Control
 
 **Canonical Location:** `examples/advanced/03-rbac-modifiers/`  
-**Also see:** `examples/intermediate/02-role-based-access-control/` (numeric hierarchy), `examples/advanced/05-hierarchical-access-control/` (permission inheritance), `examples/advanced/03-registry-access-controls/` (registry-specific)
+**Also see:** `examples/intermediate/02-role-based-access-control/` (numeric hierarchy), `examples/advanced/16-hierarchical-access-control/` (permission inheritance), `examples/advanced/03-registry-access-controls/` (registry-specific)
 
 ### What it does
 Assigns roles to addresses and restricts function access by role. Supports flexible symbol-based roles, composable guards (`only_role`, `any_role`), and role renunciation. The canonical pattern uses symbol-based roles for maximum flexibility.
@@ -225,7 +225,7 @@ Assigns roles to addresses and restricts function access by role. Supports flexi
 
 ### Alternative patterns
 - Use **02-role-based-access-control** for strict numeric hierarchies (Owner > Admin > Moderator > User).
-- Use **05-hierarchical-access-control** for dynamic permission inheritance and role hierarchies.
+- Use **16-hierarchical-access-control** for dynamic permission inheritance and role hierarchies.
 - Use **03-registry-access-controls** for registry-specific whitelist/fee patterns.
 
 ---
