@@ -13,7 +13,7 @@ This is the **second step** in the [state channels learning path](../README.md#s
 **Prerequisites:** Start with [`07-state-channels`](../07-state-channels/) to understand the foundation.
 
 **Next steps:**
-- **[`03-state-channel-disputes`](../03-state-channel-disputes/)** — Handle disputes when participants disagree
+- **[`34-state-channel-disputes`](../34-state-channel-disputes/)** — Handle disputes when participants disagree
 - **[`13-virtual-channel`](../13-virtual-channel/)** — Route through intermediaries for network effects
 
 ## Key Concepts
