@@ -49,6 +49,7 @@ members = [
     "examples/advanced/09-storage-layout-validator",
     "examples/advanced/03-permit-pattern",
     "examples/advanced/03-oracle-pattern",
+    "examples/advanced/04-circuit-breaker",
     "examples/advanced/04-upgradeable-proxy",
     "examples/advanced/08-multicall",
     "examples/advanced/05-rate-limiting",
