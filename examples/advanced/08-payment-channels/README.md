@@ -1,17 +1,30 @@
 # Payment Channels
 
-Bidirectional payment channel example with off-chain state updates and final settlement.
+Specialized payment channels for transacting between two parties with immediate settlement.
 
-## Use Cases
-- Instant micro-payments between two parties
-- Recurring payments without per-payment tx fees
-- Scalable payment hub via off-chain balance updates
+## Role in Learning Path
 
-## Functions
-- `init` - Set up channel with token, participants, expiry
-- `deposit` - Fund the channel
-- `submit_state` - Update balances with both parties' signatures
-- `close` - Finalize and pay out
+This is the **second step** in the [state channels learning path](../README.md#state-channels--payment-channels). After learning generic state channels, this example shows:
+- How to apply state channels specifically to payments
+- Efficient payment settlement patterns
+- Balance and nonce tracking for payment flows
+- Fast, low-cost two-party transactions
 
-## Tests
-`cargo test`
+**Prerequisites:** Start with [`07-state-channels`](../07-state-channels/) to understand the foundation.
+
+**Next steps:**
+- **[`03-state-channel-disputes`](../03-state-channel-disputes/)** — Handle disputes when participants disagree
+- **[`13-virtual-channel`](../13-virtual-channel/)** — Route through intermediaries for network effects
+
+## Key Concepts
+
+- Specialized payment settlement logic
+- Efficient balance updates
+- Two-party trust model
+- Immediate finality on settlement
+
+## Pattern Progression
+
+**Generic state channels → Payment-specific → Dispute resolution → Virtual routing**
+
+See the [advanced examples README](../README.md) for the full state channels learning path.

@@ -1,6 +1,8 @@
 # RBAC Modifiers
 
-Role-Based Access Control (RBAC) patterns for Soroban smart contracts. This example shows how to define roles, protect functions with composable role guards, and emit a consistent event model for every role change.
+**Canonical RBAC Pattern** — Role-Based Access Control (RBAC) for Soroban smart contracts. This is the recommended starting point for learning RBAC patterns in Soroban. It demonstrates how to define roles, protect functions with composable role guards, and emit a consistent event model for every role change.
+
+> **Note:** This is the canonical RBAC example in the cookbook. Other access control examples build on or extend this pattern for specialized use cases. See [Related Examples](#related-examples) below for comparison.
 
 ## What You'll Learn
 
@@ -149,6 +151,37 @@ cargo test -p rbac-modifiers --target x86_64-unknown-linux-gnu
 
 ## Related Examples
 
+### Other Access Control Patterns
+
+This example is the **canonical RBAC pattern**. The following examples extend or specialize this pattern:
+
+- **[02-role-based-access-control](../../intermediate/02-role-based-access-control/)** — Simpler RBAC with numeric role hierarchy (Owner > Admin > Moderator > User). Use when you need a strict hierarchical permission model.
+
+- **[access-control](../../intermediate/access-control/)** — Combines RBAC + Multisig + Timelock in one contract. Use when you need layered governance with time-delayed execution and multi-party approval.
+
+- **[05-hierarchical-access-control](../05-hierarchical-access-control/)** — Advanced: RBAC with permission inheritance and fine-grained permission checks. Use when you need dynamic permissions that roles can gain/lose at runtime.
+
+- **[03-registry-access-controls](../03-registry-access-controls/)** — Registry-specific access controls with whitelist and registration fees. Use for domain registries or similar use cases.
+
+### Complementary Patterns
+
 - [01-multi-party-auth](../01-multi-party-auth/) — N-of-N and M-of-N authorization patterns
 - [02-timelock](../02-timelock/) — Time-delayed execution with admin guards
 - [03-authentication](../../basics/03-authentication/) — Single-party auth basics
+
+## When to Use This Pattern
+
+Choose **this example** (03-rbac-modifiers) when you need:
+- ✅ Flexible, symbol-based roles (not locked to a fixed hierarchy)
+- ✅ Composable guards (`only_role`, `any_role`) for protecting functions
+- ✅ The ability to add custom roles without modifying the contract
+- ✅ Event-driven audit trails for all role changes
+- ✅ A production-ready pattern that works with pause/unpause and role renunciation
+
+Choose a **different pattern** when:
+- 🔄 You need strict numeric role hierarchy → use `02-role-based-access-control`
+- 🔄 You need multisig + timelock + RBAC in one contract → use `access-control`
+- 🔄 You need roles to inherit permissions dynamically → use `05-hierarchical-access-control`
+- 🔄 You're building a registry with fees/whitelist → use `03-registry-access-controls`
+
+**📖 For a comprehensive comparison of all RBAC patterns, see [RBAC Pattern Comparison Guide](../../docs/rbac-pattern-comparison.md).**

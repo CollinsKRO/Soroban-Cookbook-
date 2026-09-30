@@ -7,7 +7,7 @@ use std::vec::Vec as StdVec;
 
 // ---------------------------------------------------------------------------
 // Off-chain Merkle tree builder used by tests.
-// Mirrors the canonical sorting and tree building matching 05-merkle-proofs.
+// Mirrors the canonical sorting and tree building matching 21-merkle-proofs.
 // ---------------------------------------------------------------------------
 
 fn hash_pair(env: &Env, a: &BytesN<32>, b: &BytesN<32>) -> BytesN<32> {
