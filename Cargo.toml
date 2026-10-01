@@ -79,6 +79,7 @@ members = [
     "examples/advanced/08-payment-channels",
     "examples/advanced/08-computation-optimization",
     "examples/advanced/08-gas-reporter",
+    "examples/advanced/08-computation-optimization",
     "examples/advanced/09-fuzz-testing",
     "examples/advanced/09-storage-optimization",
     "examples/advanced/10-contract-migrations",
