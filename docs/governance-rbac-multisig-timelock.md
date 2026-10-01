@@ -249,7 +249,7 @@ A solid governance system often layers RBAC, multisig, and timelock.
 
 ## 6. Example references in this repository
 
-- **[`examples/advanced/03-rbac-modifiers/`](../examples/advanced/03-rbac-modifiers/)** — **Canonical RBAC pattern** with composable role guards
+- **[`examples/advanced/32-rbac-modifiers/`](../examples/advanced/32-rbac-modifiers/)** — **Canonical RBAC pattern** with composable role guards
 - [`examples/intermediate/02-role-based-access-control/`](../examples/intermediate/02-role-based-access-control/) — Simple RBAC with numeric role hierarchy
 - [`examples/intermediate/access-control/`](../examples/intermediate/access-control/) — Combined RBAC, multisig, and timelock with threat models
 - [`examples/advanced/16-hierarchical-access-control/`](../examples/advanced/16-hierarchical-access-control/) — Advanced RBAC with role hierarchy and permission inheritance
