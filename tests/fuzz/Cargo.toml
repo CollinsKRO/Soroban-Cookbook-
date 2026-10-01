@@ -24,6 +24,8 @@ path = "../../examples/advanced/02-timelock"
 [dependencies.multi-party-auth]
 path = "../../examples/advanced/01-multi-party-auth"
 
+
+
 [[bin]]
 name = "example_fuzz"
 path = "fuzz_targets/example_fuzz.rs"
