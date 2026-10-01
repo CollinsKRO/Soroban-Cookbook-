@@ -1,18 +1,8 @@
 #![cfg_attr(target_family = "wasm", no_std)]
 
-use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, xdr::ToXdr, Address, Bytes, BytesN, Env, Symbol};
-use soroban_sdk::token;
-
-const TOKEN: Symbol = symbol_short!("TOKEN");
-const PUB_A: Symbol = symbol_short!("PUB_A");
-const PUB_B: Symbol = symbol_short!("PUB_B");
-const PART_A: Symbol = symbol_short!("PART_A");
-const PART_B: Symbol = symbol_short!("PART_B");
-const EXPIRY: Symbol = symbol_short!("EXPIRY");
-const BAL_A: Symbol = symbol_short!("BAL_A");
-const BAL_B: Symbol = symbol_short!("BAL_B");
-const SEQ: Symbol = symbol_short!("SEQ");
-const CLOSED: Symbol = symbol_short!("CLOSED");
+use soroban_sdk::{
+    contract, contractimpl, contracttype, token, xdr::ToXdr, Address, Bytes, BytesN, Env,
+};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[contracttype]
@@ -25,6 +15,21 @@ pub struct ChannelInfo {
     pub sequence: u32,
     pub expiry: u64,
     pub is_closed: bool,
+}
+
+#[derive(Clone)]
+#[contracttype]
+pub enum DataKey {
+    Token,
+    PubA,
+    PubB,
+    ParticipantA,
+    ParticipantB,
+    Expiry,
+    BalanceA,
+    BalanceB,
+    Sequence,
+    Closed,
 }
 
 #[contract]
@@ -77,17 +82,29 @@ impl PaymentChannel {
         pubkey_b: BytesN<32>,
         expiry: u64,
     ) {
-        assert!(!env.storage().instance().has(&TOKEN), "already initialized");
-        env.storage().instance().set(&TOKEN, &token);
-        env.storage().instance().set(&PUB_A, &pubkey_a);
-        env.storage().instance().set(&PUB_B, &pubkey_b);
-        env.storage().instance().set(&PART_A, &participant_a);
-        env.storage().instance().set(&PART_B, &participant_b);
-        env.storage().instance().set(&EXPIRY, &expiry);
-        env.storage().instance().set(&BAL_A, &0_i128);
-        env.storage().instance().set(&BAL_B, &0_i128);
-        env.storage().instance().set(&SEQ, &0_u32);
-        env.storage().instance().set(&CLOSED, &false);
+        // Require authorization from both participants to prevent third parties
+        // from binding arbitrary channel parameters without their consent.
+        participant_a.require_auth();
+        participant_b.require_auth();
+
+        assert!(
+            !env.storage().instance().has(&DataKey::Token),
+            "already initialized"
+        );
+        env.storage().instance().set(&DataKey::Token, &token);
+        env.storage().instance().set(&DataKey::PubA, &pubkey_a);
+        env.storage().instance().set(&DataKey::PubB, &pubkey_b);
+        env.storage()
+            .instance()
+            .set(&DataKey::ParticipantA, &participant_a);
+        env.storage()
+            .instance()
+            .set(&DataKey::ParticipantB, &participant_b);
+        env.storage().instance().set(&DataKey::Expiry, &expiry);
+        env.storage().instance().set(&DataKey::BalanceA, &0_i128);
+        env.storage().instance().set(&DataKey::BalanceB, &0_i128);
+        env.storage().instance().set(&DataKey::Sequence, &0_u32);
+        env.storage().instance().set(&DataKey::Closed, &false);
     }
 
     pub fn deposit(env: Env, from: Address, amount: i128) {
@@ -95,22 +112,28 @@ impl PaymentChannel {
         assert!(env.ledger().timestamp() < get_expiry(&env), "channel expired");
         assert!(amount > 0, "amount must be positive");
         from.require_auth();
-        let token = get_token(&env);
-        token::Client::new(&env, &token).transfer(&from, &env.current_contract_address(), &amount);
+
         let participant_a = get_participant_a(&env);
         let participant_b = get_participant_b(&env);
+        assert!(
+            from == participant_a || from == participant_b,
+            "not a participant"
+        );
+
+        let contract_address = env.current_contract_address();
+        let token = get_token(&env);
+        token::Client::new(&env, &token).transfer(&from, &contract_address, &amount);
+
         if from == participant_a {
             let bal = get_balance_a(&env);
             env.storage()
                 .instance()
                 .set(&DataKey::BalanceA, &(bal + amount));
-        } else if from == participant_b {
+        } else {
             let bal = get_balance_b(&env);
             env.storage()
                 .instance()
                 .set(&DataKey::BalanceB, &(bal + amount));
-        } else {
-            panic!("not a participant");
         }
     }
 
@@ -138,13 +161,17 @@ impl PaymentChannel {
         assert!(new_balance_a >= 0 && new_balance_b >= 0, "negative balance");
         assert!(new_balance_a + new_balance_b == total, "balance mismatch");
         let msg = build_message(&env, &new_balance_a, &new_balance_b, &sequence);
-        let pk_a: BytesN<32> = env.storage().instance().get(&PUB_A).unwrap();
-        let pk_b: BytesN<32> = env.storage().instance().get(&PUB_B).unwrap();
+        let pk_a: BytesN<32> = env.storage().instance().get(&DataKey::PubA).unwrap();
+        let pk_b: BytesN<32> = env.storage().instance().get(&DataKey::PubB).unwrap();
         env.crypto().ed25519_verify(&pk_a, &msg, &sig_a);
         env.crypto().ed25519_verify(&pk_b, &msg, &sig_b);
-        env.storage().instance().set(&BAL_A, &new_balance_a);
-        env.storage().instance().set(&BAL_B, &new_balance_b);
-        env.storage().instance().set(&SEQ, &sequence);
+        env.storage()
+            .instance()
+            .set(&DataKey::BalanceA, &new_balance_a);
+        env.storage()
+            .instance()
+            .set(&DataKey::BalanceB, &new_balance_b);
+        env.storage().instance().set(&DataKey::Sequence, &sequence);
     }
 
     pub fn close(env: Env, from: Address) {
@@ -155,19 +182,20 @@ impl PaymentChannel {
         if from != participant_a && from != participant_b {
             panic!("not a participant");
         }
+        let contract_address = env.current_contract_address();
         let token = get_token(&env);
         let balance_a = get_balance_a(&env);
         let balance_b = get_balance_b(&env);
         if balance_a > 0 {
             token::Client::new(&env, &token).transfer(
-                &env.current_contract_address(),
+                &contract_address,
                 &participant_a,
                 &balance_a,
             );
         }
         if balance_b > 0 {
             token::Client::new(&env, &token).transfer(
-                &env.current_contract_address(),
+                &contract_address,
                 &participant_b,
                 &balance_b,
             );
