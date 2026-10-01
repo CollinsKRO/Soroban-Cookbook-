@@ -1,12 +1,17 @@
 name: Templates
 
-# The `templates/*` directories are intentionally standalone Cargo workspaces:
-# each declares its own [workspace] with its own pinned `soroban-sdk` so a
-# learner can copy the directory out of this repository and build it on its own.
-# Because a package cannot belong to two workspaces at once, they are listed in
-# the root `exclude` table instead of `members`, so `cargo ... --workspace`
-# (and scripts/ci-workspace.sh) never touches them. Without a dedicated job like
-# this one, a broken template would still ship looking official. See #1184.
+# The `templates/token-dapp` and `templates/dao-governance-dapp` directories are
+# intentionally standalone Cargo workspaces: each declares its own [workspace]
+# with its own pinned `soroban-sdk` so a learner can copy the directory out of
+# this repository and build it on its own. Because a package cannot belong to two
+# workspaces at once, they are listed in the root `exclude` table instead of
+# `members`, so `cargo ... --workspace` (and scripts/ci-workspace.sh) never
+# touches them. Without a dedicated job like this one, a broken template would
+# still ship looking official. See #1184.
+#
+# `templates/nft-marketplace-dapp` is a single package (not a standalone
+# workspace) and is a root workspace member, so the main "Test and Lint"
+# workflow (`cargo ... --workspace`) covers it; it is not built by this job.
 
 on:
   push:
