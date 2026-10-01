@@ -30,6 +30,7 @@ members = [
     "examples/hello-world",
     "examples/intermediate/event-aggregation",
     "examples/basics/01-hello-world",
+    "examples/basics/05-error-handling",
     "examples/basics/03-custom-errors",
     "examples/basics/06-validation-patterns",
     "examples/basics/07-type-conversions",
@@ -170,7 +171,7 @@ base64ct = "=1.8.3"
 ajo-factory = { path = "examples/intermediate/ajo-factory" }
 multi-sig-patterns = { path = "examples/intermediate/multi-sig-patterns" }
 
-[Profile.release]
+[profile.release]
 opt-level = "z"
 overflow-checks = true
 debug = 0
@@ -180,7 +181,7 @@ panic = "abort"
 codegen-units = 1
 lto = true
 
-[Profile.release-with-logs]
+[profile.release-with-logs]
 inherits = "release"
 debug-assertions = true
 
