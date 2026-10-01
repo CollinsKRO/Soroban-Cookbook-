@@ -36,5 +36,5 @@ This example differs from the canonical RBAC pattern by using a **numeric role h
 
 - **[32-rbac-modifiers](../../advanced/32-rbac-modifiers/)** — **Canonical RBAC pattern** with composable guards and flexible symbol-based roles
 - [access-control](../access-control/) — Combined RBAC + Multisig + Timelock pattern
-- [05-hierarchical-access-control](../../advanced/05-hierarchical-access-control/) — RBAC with dynamic permission inheritance
+- [16-hierarchical-access-control](../../advanced/16-hierarchical-access-control/) — RBAC with dynamic permission inheritance
 - [03-authentication](../../basics/03-authentication/) — Single-party auth basics

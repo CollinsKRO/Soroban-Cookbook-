@@ -159,7 +159,7 @@ This example is the **canonical RBAC pattern**. The following examples extend or
 
 - **[access-control](../../intermediate/access-control/)** — Combines RBAC + Multisig + Timelock in one contract. Use when you need layered governance with time-delayed execution and multi-party approval.
 
-- **[05-hierarchical-access-control](../05-hierarchical-access-control/)** — Advanced: RBAC with permission inheritance and fine-grained permission checks. Use when you need dynamic permissions that roles can gain/lose at runtime.
+- **[16-hierarchical-access-control](../16-hierarchical-access-control/)** — Advanced: RBAC with permission inheritance and fine-grained permission checks. Use when you need dynamic permissions that roles can gain/lose at runtime.
 
 - **[33-registry-access-controls](../33-registry-access-controls/)** — Registry-specific access controls with whitelist and registration fees. Use for domain registries or similar use cases.
 

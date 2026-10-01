@@ -23,7 +23,7 @@ What kind of access control?
 │   ├─ Need strict numeric hierarchy? → 02-role-based-access-control
 │   │   └─ Roles: Owner (4) > Admin (3) > Moderator (2) > User (1)
 │   │
-│   ├─ Need role inheritance + dynamic permissions? → 05-hierarchical-access-control
+│   ├─ Need role inheritance + dynamic permissions? → 16-hierarchical-access-control
 │   │   └─ Roles: ADMIN → MANAGER → OPERATOR with permission propagation
 │   │
 │   └─ Building a registry with whitelist/fees? → 33-registry-access-controls
@@ -125,9 +125,9 @@ pub fn admin_or_minter_action(env: Env, caller: Address) {
 
 ---
 
-### 3. 05-hierarchical-access-control
+### 3. 16-hierarchical-access-control
 
-**Location:** `examples/advanced/05-hierarchical-access-control/`
+**Location:** `examples/advanced/16-hierarchical-access-control/`
 
 **Best for:**
 - Complex organizational structures
@@ -341,7 +341,7 @@ Test these scenarios:
 - Custom role symbols
 - Idempotent grants
 
-**Hierarchical (05-hierarchical-access-control):**
+**Hierarchical (16-hierarchical-access-control):**
 - Permission inheritance across hierarchy
 - Dynamic permission grants
 - Manager can grant OPERATOR but not ADMIN
@@ -358,7 +358,7 @@ Test these scenarios:
 1. **Start here:** [`32-rbac-modifiers`](../examples/advanced/32-rbac-modifiers/) — Learn the canonical pattern
 2. **Then explore:**
    - [`02-role-based-access-control`](../examples/intermediate/02-role-based-access-control/) — See numeric hierarchy alternative
-   - [`05-hierarchical-access-control`](../examples/advanced/05-hierarchical-access-control/) — Learn permission inheritance
+   - [`16-hierarchical-access-control`](../examples/advanced/16-hierarchical-access-control/) — Learn permission inheritance
 3. **For specialized needs:**
    - [`33-registry-access-controls`](../examples/advanced/33-registry-access-controls/) — Registry pattern
    - [`access-control`](../examples/intermediate/access-control/) — Combined governance
