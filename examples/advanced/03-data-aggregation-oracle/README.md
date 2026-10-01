@@ -1,5 +1,28 @@
 # Data Aggregation Oracle
 
+> **⚠️ UNAUDITED EXAMPLE — NOT FOR PRODUCTION USE**
+>
+> The contract code and patterns shown on this page have **not been audited**.
+> They are provided solely as a learning resource to illustrate Soroban
+> development techniques.  **Do not deploy this contract with real funds
+> or in a production environment without a professional security audit.**
+>
+> **Reentrancy:** Soroban's execution model does not support re-entrant
+> cross-contract calls within the same transaction — re-entry is a
+> protocol-level impossibility on Soroban.  Any reentrancy-style guards
+> in this example are therefore illustrative rather than strictly
+> necessary.
+>
+> **Storage TTL / data-expiry:** Soroban instance and persistent storage
+> entries expire after a ledger-defined TTL (default ~30 days on Mainnet).
+> An aggregation oracle that is not called for an extended period will
+> have its data — including aggregated values, source records, and
+> freshness timestamps — **silently deleted**.  Production deployments
+> **must** extend instance (and any persistent) storage TTL on every
+> submission or via an off-chain keeper.  Failure to do so will cause
+> the oracle history to be lost and downstream consumers to read
+> uninitialized or stale data.
+
 Data aggregation with manipulation detection and outlier filtering.
 
 ## Role in Learning Path
