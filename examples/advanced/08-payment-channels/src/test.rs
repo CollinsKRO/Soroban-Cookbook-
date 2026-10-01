@@ -1,9 +1,9 @@
 #![cfg(test)]
 
 use ed25519_dalek::{Signer, SigningKey};
-use soroban_sdk::testutils::Address as _;
-use soroban_sdk::{contract, contractimpl, symbol_short, xdr::ToXdr, Address, Bytes, BytesN, Env};
+use soroban_sdk::testutils::{Address as _, Ledger as _};
 use soroban_sdk::token::{Client as TokenClient, StellarAssetClient as TokenAssetClient};
+use soroban_sdk::{contract, contractimpl, symbol_short, xdr::ToXdr, Address, Bytes, BytesN, Env, IntoVal};
 
 use crate::{PaymentChannel, PaymentChannelClient};
 
@@ -149,7 +149,6 @@ fn test_invalid_signature() {
     let new_b: i128 = 80;
     let seq: u32 = 1;
     let msg = make_state_message(&env, &pc_id, new_a, new_b, seq);
-    let msg_bytes = msg.to_buffer::<128>();
     // Sign with a wrong key
     let wrong_kp = SigningKey::from_bytes(&[3u8; 32]);
     let sig_bad_bytes = sign_message(&env, &wrong_kp, &msg);
@@ -177,4 +176,146 @@ fn test_sequence_must_increase() {
 
     // Try to submit an older sequence
     pc_client.submit_state(&addr_a, &new_a, &new_b, &0, &sig_a_bytes, &sig_b_bytes);
+}
+
+#[test]
+#[should_panic(expected = "HostError: Error(Auth, InvalidAction)")]
+fn test_init_without_auth_fails() {
+    let env = Env::default();
+    let kp_a = SigningKey::from_bytes(&[1u8; 32]);
+    let kp_b = SigningKey::from_bytes(&[2u8; 32]);
+    let pub_a = pubkey_to_bytesn(&env, &kp_a);
+    let pub_b = pubkey_to_bytesn(&env, &kp_b);
+    let addr_a = Address::generate(&env);
+    let addr_b = Address::generate(&env);
+
+    let token_id = env.register(TestToken, ());
+    let pc_id = env.register(PaymentChannel, ());
+    let pc_client = PaymentChannelClient::new(&env, &pc_id);
+    let expiry = env.ledger().timestamp() + 1000;
+
+    env.mock_all_auths();
+    env.set_auths(&[]); // Strip all auths so neither participant authorizes
+
+    pc_client.init(&token_id, &addr_a, &addr_b, &pub_a, &pub_b, &expiry);
+}
+
+#[test]
+#[should_panic(expected = "HostError: Error(Auth, InvalidAction)")]
+fn test_init_without_participant_b_auth_fails() {
+    let env = Env::default();
+    let kp_a = SigningKey::from_bytes(&[1u8; 32]);
+    let kp_b = SigningKey::from_bytes(&[2u8; 32]);
+    let pub_a = pubkey_to_bytesn(&env, &kp_a);
+    let pub_b = pubkey_to_bytesn(&env, &kp_b);
+    let addr_a = Address::generate(&env);
+    let addr_b = Address::generate(&env);
+
+    let token_id = env.register(TestToken, ());
+    let pc_id = env.register(PaymentChannel, ());
+    let pc_client = PaymentChannelClient::new(&env, &pc_id);
+    let expiry = env.ledger().timestamp() + 1000;
+
+    // Only participant A authorizes
+    env.mock_auths(&[
+        soroban_sdk::testutils::MockAuth {
+            address: &addr_a,
+            invoke: &soroban_sdk::testutils::MockAuthInvoke {
+                contract: &pc_id,
+                fn_name: "init",
+                args: (&token_id, &addr_a, &addr_b, &pub_a, &pub_b, expiry).into_val(&env),
+                sub_invokes: &[],
+            },
+        },
+    ]);
+
+    pc_client.init(&token_id, &addr_a, &addr_b, &pub_a, &pub_b, &expiry);
+}
+
+#[test]
+#[should_panic(expected = "HostError: Error(Auth, InvalidAction)")]
+fn test_init_without_participant_a_auth_fails() {
+    let env = Env::default();
+    let kp_a = SigningKey::from_bytes(&[1u8; 32]);
+    let kp_b = SigningKey::from_bytes(&[2u8; 32]);
+    let pub_a = pubkey_to_bytesn(&env, &kp_a);
+    let pub_b = pubkey_to_bytesn(&env, &kp_b);
+    let addr_a = Address::generate(&env);
+    let addr_b = Address::generate(&env);
+
+    let token_id = env.register(TestToken, ());
+    let pc_id = env.register(PaymentChannel, ());
+    let pc_client = PaymentChannelClient::new(&env, &pc_id);
+    let expiry = env.ledger().timestamp() + 1000;
+
+    // Only participant B authorizes
+    env.mock_auths(&[
+        soroban_sdk::testutils::MockAuth {
+            address: &addr_b,
+            invoke: &soroban_sdk::testutils::MockAuthInvoke {
+                contract: &pc_id,
+                fn_name: "init",
+                args: (&token_id, &addr_a, &addr_b, &pub_a, &pub_b, expiry).into_val(&env),
+                sub_invokes: &[],
+            },
+        },
+    ]);
+
+    pc_client.init(&token_id, &addr_a, &addr_b, &pub_a, &pub_b, &expiry);
+}
+
+#[test]
+#[should_panic(expected = "already initialized")]
+fn test_init_already_initialized_fails() {
+    let (env, pc_id, addr_a, addr_b, kp_a, kp_b, token_id) = setup();
+    let pc_client = PaymentChannelClient::new(&env, &pc_id);
+    let pub_a = pubkey_to_bytesn(&env, &kp_a);
+    let pub_b = pubkey_to_bytesn(&env, &kp_b);
+    let expiry = env.ledger().timestamp() + 2000;
+
+    pc_client.init(&token_id, &addr_a, &addr_b, &pub_a, &pub_b, &expiry);
+}
+
+#[test]
+#[should_panic(expected = "not a participant")]
+fn test_deposit_by_non_participant_fails() {
+    let (env, pc_id, _addr_a, _addr_b, _kp_a, _kp_b, token_id) = setup();
+    let pc_client = PaymentChannelClient::new(&env, &pc_id);
+    let outsider = Address::generate(&env);
+
+    let token_asset = TokenAssetClient::new(&env, &token_id);
+    token_asset.mint(&outsider, &1000);
+
+    pc_client.deposit(&outsider, &100);
+}
+
+#[test]
+#[should_panic(expected = "not a participant")]
+fn test_close_by_non_participant_fails() {
+    let (env, pc_id, _addr_a, _addr_b, _kp_a, _kp_b, _token_id) = setup();
+    let pc_client = PaymentChannelClient::new(&env, &pc_id);
+    let outsider = Address::generate(&env);
+
+    pc_client.close(&outsider);
+}
+
+#[test]
+#[should_panic(expected = "channel expired")]
+fn test_deposit_after_expiry_fails() {
+    let (env, pc_id, addr_a, _addr_b, _kp_a, _kp_b, _token_id) = setup();
+    let pc_client = PaymentChannelClient::new(&env, &pc_id);
+
+    // Fast forward ledger timestamp past expiry (expiry was timestamp + 1000)
+    env.ledger().with_mut(|l| l.timestamp += 2000);
+
+    pc_client.deposit(&addr_a, &100);
+}
+
+#[test]
+#[should_panic(expected = "amount must be positive")]
+fn test_deposit_zero_fails() {
+    let (env, pc_id, addr_a, _addr_b, _kp_a, _kp_b, _token_id) = setup();
+    let pc_client = PaymentChannelClient::new(&env, &pc_id);
+
+    pc_client.deposit(&addr_a, &0);
 }
