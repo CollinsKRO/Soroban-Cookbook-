@@ -172,6 +172,19 @@ members = [
     "tests/docs-audit",
     "tests/fuzz",
     "examples/advanced/04-upgradeable-proxy/implementation-v1",
+    "examples/basics/02-storage-patterns",
+    "examples/basics/03-authentication",
+    "examples/basics/04-events",
+    "examples/basics/05-auth-context",
+    "examples/basics/08-soroban-types",
+    "examples/basics/10-custom-structs",
+    "examples/basics/11-primitive-types",
+    "examples/basics/12-data-types",
+    "examples/intermediate/02-role-based-access-control",
+    "examples/intermediate/access-control",
+    "examples/defi/05-flash-loans",
+    "examples/defi/06-flash-loan-use-cases",
+    "examples/tokens/10-automatic-snapshot-triggers",
 ]
 
 [workspace.package]
