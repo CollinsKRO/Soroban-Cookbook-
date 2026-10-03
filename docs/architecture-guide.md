@@ -206,7 +206,7 @@ let mem = env.budget().memory_bytes_cost();
 
 Each cross-contract call incurs overhead. Batch calls where possible using `batch-operations` patterns:
 
-**Example:** `examples/advanced/08-batch-operations`
+**Example:** `examples/advanced/39-batch-operations`
 
 ### Event-Driven Off-Chain Processing
 

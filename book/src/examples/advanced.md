@@ -120,7 +120,7 @@ let value = client.get_value_strict(); // errors if stale
 
 ---
 
-### [08-batch-operations](../examples/advanced/08-batch-operations/)
+### [39-batch-operations](../examples/advanced/39-batch-operations/)
 **Batch operations** with atomic and partial execution.
 
 **Key Concepts:**

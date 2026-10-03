@@ -251,7 +251,7 @@ Extends RBAC with hierarchical organization units. Permissions propagate down th
 
 ## 11. Batch Operations
 
-**Location:** `examples/advanced/08-batch-operations/`
+**Location:** `examples/advanced/39-batch-operations/`
 
 ### What it does
 Executes multiple contract calls in a single transaction with configurable atomicity. Supports all-succeed-or-fail and partial-execution modes.

@@ -63,7 +63,7 @@ covering a distinct upgradeability concern:
 A progression from generic state channels to specialized payment and virtual channels:
 
 1. **[`07-state-channels`](./07-state-channels/)** — Generic state channel framework with on-chain settlement and dispute resolution. Start here to learn the core mechanics of off-chain state updates with on-chain finality.
-2. **[`08-payment-channels`](./08-payment-channels/)** — Specialized payment channels for transacting between two parties with immediate settlement. Builds on state channel fundamentals.
+2. **[`43-payment-channels`](./43-payment-channels/)** — Specialized payment channels for transacting between two parties with immediate settlement. Builds on state channel fundamentals.
 3. **[`34-state-channel-disputes`](./34-state-channel-disputes/)** — Dispute resolution with challenges, responses, timeouts, and fraud proofs. Learn how to resolve state conflicts when participants disagree.
 4. **[`13-virtual-channel`](./13-virtual-channel/)** — Virtual payment channels routed through an intermediary. Routes ledger channels through a hub; enables faster, lower-cost payments via off-chain routing.
 
@@ -123,8 +123,8 @@ A progression from basic oracle producers through aggregation to consumer patter
 - [`18-diamond-facets`](./18-diamond-facets/) — Diamond router orchestration with atomic cross-facet operations
 - [`19-diamond-security`](./19-diamond-security/) — Security-hardened diamond with access controls, interface verification, and upgrade safeguards
 - [`38-diamond-pattern`](./38-diamond-pattern/) — **Canonical diamond pattern** (EIP-2535) with full diamond-cut and diamond-loupe introspection
-- [`08-batch-operations`](./08-batch-operations/) — Batch call interface with atomic rollback
-- [`08-payment-channels`](./08-payment-channels/) — Specialized payment channels for two-party transactions (See [State Channels learning path](#state-channels--payment-channels))
+- [`39-batch-operations`](./39-batch-operations/) — Batch call interface with atomic rollback
+- [`43-payment-channels`](./43-payment-channels/) — Specialized payment channels for two-party transactions (See [State Channels learning path](#state-channels--payment-channels))
 - [`09-fuzz-testing`](./09-fuzz-testing/) — Fuzzable claimable-balance contract with property tests and cargo-fuzz targets
 - [`09-storage-optimization`](./09-storage-optimization/) — Packed storage, lazy loading, and batch operations
 - [`10-contract-migrations`](./10-contract-migrations/) — Batched v1→v2 storage migration with dual-read and version gates
