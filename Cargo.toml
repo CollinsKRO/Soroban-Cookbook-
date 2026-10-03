@@ -1,14 +1,14 @@
 [workspace]
 resolver = "2"
 
-# The `templates/*` directories intentionally contain their own Cargo
-# workspaces — each is a self-contained learner starter kit with its own
-# `soroban-sdk` version (kept in sync with the root workspace), meant to be
-# copied out and built standalone. Because a package cannot belong to two
-# workspaces at once, they are excluded from the root workspace rather than
-# listed under `members`. 
+# The `templates/dao-governance-dapp` and `templates/token-dapp` directories
+# intentionally contain their own Cargo workspaces — each is a self-contained
+# learner starter kit with its own `soroban-sdk` (kept in sync with the root
+# workspace), meant to be copied out and built standalone. Because a package
+# cannot belong to two workspaces at once, they are excluded from the root
+# workspace rather than listed under `members`.
 #
-# Each template defines its own workspace members in its Cargo.toml:
+# Each defines its own workspace members in its Cargo.toml:
 #   - templates/dao-governance-dapp/contracts/governance
 #   - templates/token-dapp/contracts/token
 #
@@ -16,11 +16,13 @@ resolver = "2"
 #     cd templates/dao-governance-dapp && cargo build
 #     cd templates/token-dapp && cargo build
 #
-# The nft-marketplace-dapp is structured as a single package (not a workspace)
-# and is also excluded from the root workspace.
+# `templates/nft-marketplace-dapp` is a single package (not a workspace) whose
+# contract library lives at `contracts/marketplace/src/lib.rs`. It is listed
+# under `members` below so `cargo build --workspace` and `cargo test --workspace`
+# build it with the workspace `soroban-sdk` (28.0.0-rc.1), keeping it from
+# rotting unnoticed.
 exclude = [
     "templates/dao-governance-dapp",
-    "templates/nft-marketplace-dapp",
     "templates/token-dapp",
     "tests/fuzz",
 ]
@@ -178,6 +180,7 @@ members = [
     "examples/defi/10-swap-liquidity",
     "examples/defi/11-amm-price-oracle",
     "examples/defi/staking-pool",
+    "templates/nft-marketplace-dapp",
     "tests/integration",
     "tests/security",
     "tests/docs-audit",
