@@ -3,7 +3,9 @@
 #![cfg_attr(target_family = "wasm", no_std)]
 #![allow(deprecated)]
 
-use soroban_sdk::{contract, contracterror, contractimpl, contracttype, symbol_short, Address, Env, Symbol};
+use soroban_sdk::{
+    contract, contracterror, contractimpl, contracttype, symbol_short, Address, Env, Symbol,
+};
 
 #[contracttype]
 #[derive(Clone)]
@@ -68,10 +70,18 @@ impl MintingStrategiesToken {
 
         env.storage().instance().set(&DataKey::Admin, &admin);
         env.storage().instance().set(&DataKey::TotalSupply, &0i128);
-        env.storage().instance().set(&DataKey::SupplyCap, &supply_cap);
-        env.storage().instance().set(&DataKey::ScheduleStart, &schedule_start);
-        env.storage().instance().set(&DataKey::ScheduleInterval, &schedule_interval);
-        env.storage().instance().set(&DataKey::ScheduleRate, &schedule_rate);
+        env.storage()
+            .instance()
+            .set(&DataKey::SupplyCap, &supply_cap);
+        env.storage()
+            .instance()
+            .set(&DataKey::ScheduleStart, &schedule_start);
+        env.storage()
+            .instance()
+            .set(&DataKey::ScheduleInterval, &schedule_interval);
+        env.storage()
+            .instance()
+            .set(&DataKey::ScheduleRate, &schedule_rate);
         env.storage()
             .instance()
             .set(&DataKey::ScheduledMinted, &0i128);
