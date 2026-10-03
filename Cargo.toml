@@ -171,6 +171,7 @@ members = [
     "tests/security",
     "tests/docs-audit",
     "tests/fuzz",
+    "examples/advanced/04-upgradeable-proxy/implementation-v1",
 ]
 
 [workspace.package]
