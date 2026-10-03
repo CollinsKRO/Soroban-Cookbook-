@@ -7,17 +7,17 @@ This category contains examples of complex systems and advanced architectural pa
 Follow these six examples in order. Each step builds on the previous one while
 covering a distinct upgradeability concern:
 
-1. [Upgradeable Proxy](./04-upgradeable-proxy/) — proxy-owned state and direct
+1. [Upgradeable Proxy](./04-upgradeable-proxy/) â€” proxy-owned state and direct
 	implementation routing; no governance workflow or beacon.
 2. [Proxy Admin Controls](./31-proxy-admin/) — timelocked proposals,
 	cancellation, and pause; no proxy call forwarding.
-3. [Beacon Proxy](./02-beacon-proxy/) — shared implementation routing through
+3. [Beacon Proxy](./02-beacon-proxy/) â€” shared implementation routing through
 	a beacon; no fleet factory.
 4. [Beacon Proxy Factory](./23-beacon-proxy-factory/) — deploy and track a proxy
 	fleet using one beacon; no named-beacon registry.
-5. [Beacon Management](./06-beacon-management/) — version and roll back named
+5. [Beacon Management](./37-beacon-management/) â€” version and roll back named
 	beacons; no proxy deployment or call forwarding.
-6. [Upgrade Patterns](./07-upgrade-patterns/) — direct WASM upgrades, storage
+6. [Upgrade Patterns](./07-upgrade-patterns/) â€” direct WASM upgrades, storage
 	migration, and initialization guards; no proxy or beacon system.
 
 ## Directory Organization
@@ -49,9 +49,9 @@ covering a distinct upgradeability concern:
 - **State Machines**: Contracts that implement complex, multi-step workflows like time-delayed execution.
 - **Upgrade Governance**: Admin controls, timelocks, and emergency pauses around contract upgrades.
 - **Diamond Pattern Suite**: Three specialized implementations of the EIP-2535 diamond pattern:
-  - **Canonical** ([`06-diamond-pattern`](./06-diamond-pattern/)) — Complete EIP-2535 adaptation with diamond-cut and loupe
-  - **Security-focused** ([`05-diamond-security`](./05-diamond-security/)) — Hardened variant with access controls and interface verification
-  - **Router orchestration** ([`05-diamond-facets`](./05-diamond-facets/)) — Atomic cross-facet operations and inter-facet communication
+  - **Canonical** ([`38-diamond-pattern`](./38-diamond-pattern/)) â€” Complete EIP-2535 adaptation with diamond-cut and loupe
+  - **Security-focused** ([`05-diamond-security`](./05-diamond-security/)) â€” Hardened variant with access controls and interface verification
+  - **Router orchestration** ([`05-diamond-facets`](./05-diamond-facets/)) â€” Atomic cross-facet operations and inter-facet communication
 - **Bridge Defenses**: Inbound bridge release controls such as rate limiting, challenge windows, fraud proofs, and emergency pause.
 - **Gas & Ledger Optimization**: Techniques for building highly efficient and scalable contracts.
 - **Oracle Patterns**: Single-source oracle with authorized submission and freshness validation, plus consumer-side freshness, quorum, and circuit-breaker defenses.
@@ -67,7 +67,7 @@ A progression from generic state channels to specialized payment and virtual cha
 3. **[`34-state-channel-disputes`](./34-state-channel-disputes/)** — Dispute resolution with challenges, responses, timeouts, and fraud proofs. Learn how to resolve state conflicts when participants disagree.
 4. **[`13-virtual-channel`](./13-virtual-channel/)** — Virtual payment channels routed through an intermediary. Routes ledger channels through a hub; enables faster, lower-cost payments via off-chain routing.
 
-**Summary:** Generic → Payment-specific → Dispute resolution → Virtual routing
+**Summary:** Generic â†’ Payment-specific â†’ Dispute resolution â†’ Virtual routing
 
 ### Upgrade Patterns & Proxy Patterns
 
@@ -77,10 +77,10 @@ A progression from basic proxies through beacon patterns to full upgrade governa
 2. **[`23-beacon-proxy-factory`](./23-beacon-proxy-factory/)** — Factory-managed beacon proxies with shared upgrades. One beacon controls many proxies; upgrade all at once.
 3. **[`31-proxy-admin`](./31-proxy-admin/)** — Admin-authenticated upgrade proposals with timelock and emergency pause. Add governance and safety checks to upgrades.
 4. **[`04-upgradeable-proxy`](./04-upgradeable-proxy/)** — Direct implementation upgrades with proxy-owned storage preservation. Alternative to beacon pattern; storage lives in the proxy.
-5. **[`06-beacon-management`](./06-beacon-management/)** — Versioned beacon management with rollback support. Manage multiple implementation versions and roll back if needed.
+5. **[`37-beacon-management`](./37-beacon-management/)** — Versioned beacon management with rollback support. Manage multiple implementation versions and roll back if needed.
 6. **[`07-upgrade-patterns`](./07-upgrade-patterns/)** — Direct WASM upgrade, versioned storage migration, and init guards. Highest-level patterns for safe contract evolution.
 
-**Summary:** Basic beacon → Beacon factory → Governance → Direct upgrade → Versioning → Full patterns
+**Summary:** Basic beacon â†’ Beacon factory â†’ Governance â†’ Direct upgrade â†’ Versioning â†’ Full patterns
 
 ### Oracle Patterns & Price Feeds
 
@@ -89,11 +89,11 @@ A progression from basic oracle producers through aggregation to consumer patter
 1. **[`03-oracle-pattern`](./03-oracle-pattern/)** — Basic oracle with authorized submission and freshness checks. Start here to learn single-source oracle mechanics.
 2. **[`26-data-aggregation-oracle`](./26-data-aggregation-oracle/)** — Data aggregation with manipulation detection and outlier filtering. Combine multiple data sources and sanitize them.
 3. **[`15-oracle-integration`](./15-oracle-integration/)** — Integration patterns for consuming oracle data in other contracts.
-4. **[`06-price-oracle`](./06-price-oracle/)** — Price oracle with specific focus on financial data. Specialized producer for asset prices.
+4. **[`36-price-oracle`](./36-price-oracle/)** — Price oracle with specific focus on financial data. Specialized producer for asset prices.
 5. **[`12-oracle-consumer`](./12-oracle-consumer/)** — Three consumer contracts: validated cache, quorum median consensus, and settlement circuit breaker. Learn safe consumption patterns.
 6. **[`defi/11-amm-price-oracle`](../defi/11-amm-price-oracle/)** — AMM-coupled oracle using DEX pricing. Tightly integrated price discovery via liquidity pools.
 
-**Summary:** Basic producer → Aggregation → Integration → Price-specific → Safe consumption → AMM-coupled
+**Summary:** Basic producer â†’ Aggregation â†’ Integration â†’ Price-specific â†’ Safe consumption â†’ AMM-coupled
 
 ## Implemented Examples
 
@@ -115,14 +115,14 @@ A progression from basic oracle producers through aggregation to consumer patter
 - [`17-bridge-security`](./17-bridge-security/) — Rate limiting, pause, challenge window, and fraud-proof patterns for bridge releases
 - [`16-hierarchical-access-control`](./16-hierarchical-access-control/) — Advanced RBAC with role hierarchy and dynamic permission inheritance
 - [`05-rate-limiting`](./05-rate-limiting/) — Per-user time- and amount-based rate limiting with admin overrides
-- [`06-beacon-management`](./06-beacon-management/) — Versioned beacon management with rollback support (See [Upgrade Patterns learning path](#upgrade-patterns--proxy-patterns))
-- [`06-price-oracle`](./06-price-oracle/) — Price oracle with financial data focus (See [Oracle Patterns learning path](#oracle-patterns--price-feeds))
+- [`37-beacon-management`](./37-beacon-management/) — Versioned beacon management with rollback support (See [Upgrade Patterns learning path](#upgrade-patterns--proxy-patterns))
+- [`36-price-oracle`](./36-price-oracle/) — Price oracle with financial data focus (See [Oracle Patterns learning path](#oracle-patterns--price-feeds))
 - [`07-state-channels`](./07-state-channels/) — Generic state channel framework (See [State Channels learning path](#state-channels--payment-channels))
 - [`07-trusted-forwarder`](./07-trusted-forwarder/) — Meta-transaction trusted forwarder pattern
 - [`07-upgrade-patterns`](./07-upgrade-patterns/) — Direct WASM upgrade, versioned storage migration, init guards (See [Upgrade Patterns learning path](#upgrade-patterns--proxy-patterns))
 - [`18-diamond-facets`](./18-diamond-facets/) — Diamond router orchestration with atomic cross-facet operations
 - [`19-diamond-security`](./19-diamond-security/) — Security-hardened diamond with access controls, interface verification, and upgrade safeguards
-- [`06-diamond-pattern`](./06-diamond-pattern/) — **Canonical diamond pattern** (EIP-2535) with full diamond-cut and diamond-loupe introspection
+- [`38-diamond-pattern`](./38-diamond-pattern/) — **Canonical diamond pattern** (EIP-2535) with full diamond-cut and diamond-loupe introspection
 - [`08-batch-operations`](./08-batch-operations/) — Batch call interface with atomic rollback
 - [`08-payment-channels`](./08-payment-channels/) — Specialized payment channels for two-party transactions (See [State Channels learning path](#state-channels--payment-channels))
 - [`09-fuzz-testing`](./09-fuzz-testing/) — Fuzzable claimable-balance contract with property tests and cargo-fuzz targets
@@ -152,11 +152,11 @@ Screen-recorded walkthroughs of the advanced patterns are planned but not yet
 produced. Planned topics:
 
 - Diamond pattern suite:
-  - **[`06-diamond-pattern`](./06-diamond-pattern/)** — Canonical EIP-2535 implementation (start here)
-  - **[`19-diamond-security`](./19-diamond-security/)** — Security-focused variant with access controls
-  - **[`18-diamond-facets`](./18-diamond-facets/)** — Router orchestration and inter-facet communication
+  - **[`38-diamond-pattern`](./38-diamond-pattern/)** â€” Canonical EIP-2535 implementation (start here)
+  - **[`19-diamond-security`](./19-diamond-security/)** â€” Security-focused variant with access controls
+  - **[`18-diamond-facets`](./18-diamond-facets/)** â€” Router orchestration and inter-facet communication
 - Bridge security: rate limiting, challenge windows, fraud proofs (`17-bridge-security`)
-- Price oracle: median aggregation, TWAP, staleness handling (`06-price-oracle`)
+- Price oracle: median aggregation, TWAP, staleness handling (`36-price-oracle`)
 - Meta-transactions: trusted forwarder and gasless relayer (`27-gasless-relayer`, `07-trusted-forwarder`)
 - Upgrade governance: timelocks and versioned migrations (`07-upgrade-patterns`, `10-contract-migrations`)
 
