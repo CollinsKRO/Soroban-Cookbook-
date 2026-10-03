@@ -69,6 +69,8 @@ members = [
     "examples/advanced/03-oracle-pattern",
     "examples/advanced/04-circuit-breaker",
     "examples/advanced/04-upgradeable-proxy",
+    "examples/advanced/39-batch-operations",
+    "examples/advanced/40-computation-optimization",
     "examples/advanced/42-multicall",
     "examples/advanced/05-rate-limiting",
     "examples/advanced/21-merkle-proofs",
