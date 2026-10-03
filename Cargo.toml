@@ -24,7 +24,6 @@ resolver = "2"
 exclude = [
     "templates/dao-governance-dapp",
     "templates/token-dapp",
-    "tests/fuzz",
 ]
 
 members = [
