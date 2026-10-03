@@ -1,3 +1,30 @@
+//! # Payment Channel
+//!
+//! A bidirectional payment channel between two participants.
+//!
+//! 1. `init` fixes the token, the two participants, the ed25519 keys each
+//!    participant uses to sign off-chain state, and an expiry timestamp.
+//! 2. Participants `deposit` tokens into the channel.
+//! 3. Off-chain, they exchange state updates `(balance_a, balance_b, sequence)`
+//!    signed by **both** keys. Any participant can `submit_state` the latest one.
+//! 4. `close` pays each participant their balance and closes the channel.
+//!
+//! ## Security notes
+//!
+//! * Every state-changing entry point calls `require_auth` on the acting
+//!   participant (`init` requires both).
+//! * Signed messages are bound to this contract's address, so a state signed
+//!   for one channel cannot be replayed on another.
+//! * Sequence numbers must strictly increase, so older states cannot replace
+//!   newer ones.
+//! * A new state must redistribute exactly the deposited total, never more.
+
+#![cfg_attr(target_family = "wasm", no_std)]
+
+use soroban_sdk::{
+    contract, contractimpl, contracttype, symbol_short, token, xdr::ToXdr, Address, Bytes, BytesN,
+    Env, Symbol,
+};
 #![cfg_attr(target_family = "wasm", no_std)]
 
 use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, xdr::ToXdr, Address, Bytes, BytesN, Env, Symbol};
@@ -31,33 +58,46 @@ pub struct ChannelInfo {
 pub struct PaymentChannel;
 
 fn get_participant_a(env: &Env) -> Address {
-    env.storage().instance().get(&PART_A).unwrap()
+    env.storage().instance().get(&DataKey::ParticipantA).unwrap()
 }
 fn get_participant_b(env: &Env) -> Address {
-    env.storage().instance().get(&PART_B).unwrap()
+    env.storage().instance().get(&DataKey::ParticipantB).unwrap()
 }
 fn get_token(env: &Env) -> Address {
-    env.storage().instance().get(&TOKEN).unwrap()
+    env.storage().instance().get(&DataKey::Token).unwrap()
 }
 fn get_balance_a(env: &Env) -> i128 {
-    env.storage().instance().get(&BAL_A).unwrap()
+    env.storage().instance().get(&DataKey::BalanceA).unwrap()
 }
 fn get_balance_b(env: &Env) -> i128 {
-    env.storage().instance().get(&BAL_B).unwrap()
+    env.storage().instance().get(&DataKey::BalanceB).unwrap()
 }
 fn get_sequence(env: &Env) -> u32 {
-    env.storage().instance().get(&SEQ).unwrap()
+    env.storage().instance().get(&DataKey::Sequence).unwrap()
 }
 fn get_expiry(env: &Env) -> u64 {
-    env.storage().instance().get(&EXPIRY).unwrap()
+    env.storage().instance().get(&DataKey::Expiry).unwrap()
 }
 fn is_closed(env: &Env) -> bool {
     env.storage()
         .instance()
-        .get(&CLOSED)
+        .get(&DataKey::Closed)
         .unwrap_or(false)
 }
 
+fn assert_participant(env: &Env, from: &Address) {
+    if *from != get_participant_a(env) && *from != get_participant_b(env) {
+        panic!("not a participant");
+    }
+}
+
+/// The message both participants sign off-chain:
+/// `contract_address_xdr || balance_a (be) || balance_b (be) || sequence (be)`.
+fn build_message(env: &Env, balance_a: i128, balance_b: i128, sequence: u32) -> Bytes {
+    let mut msg = env.current_contract_address().to_xdr(env);
+    msg.extend_from_array(&balance_a.to_be_bytes());
+    msg.extend_from_array(&balance_b.to_be_bytes());
+    msg.extend_from_array(&sequence.to_be_bytes());
 fn build_message(env: &Env, balance_a: &i128, balance_b: &i128, sequence: &u32) -> Bytes {
     let mut msg = env.current_contract_address().to_xdr(env);
     msg.append(&Bytes::from_slice(env, &balance_a.to_be_bytes()));
@@ -78,6 +118,22 @@ impl PaymentChannel {
         expiry: u64,
     ) {
         assert!(!env.storage().instance().has(&TOKEN), "already initialized");
+        assert!(participant_a != participant_b, "participants must differ");
+        assert!(expiry > env.ledger().timestamp(), "expiry in the past");
+        participant_a.require_auth();
+        participant_b.require_auth();
+
+        let storage = env.storage().instance();
+        storage.set(&TOKEN, &token);
+        storage.set(&PUB_A, &pubkey_a);
+        storage.set(&PUB_B, &pubkey_b);
+        storage.set(&PART_A, &participant_a);
+        storage.set(&PART_B, &participant_b);
+        storage.set(&EXPIRY, &expiry);
+        storage.set(&BAL_A, &0_i128);
+        storage.set(&BAL_B, &0_i128);
+        storage.set(&SEQ, &0_u32);
+        storage.set(&CLOSED, &false);
         env.storage().instance().set(&TOKEN, &token);
         env.storage().instance().set(&PUB_A, &pubkey_a);
         env.storage().instance().set(&PUB_B, &pubkey_b);
@@ -92,6 +148,16 @@ impl PaymentChannel {
 
     pub fn deposit(env: Env, from: Address, amount: i128) {
         assert!(!is_closed(&env), "channel closed");
+        assert!(
+            env.ledger().timestamp() < get_expiry(&env),
+            "channel expired"
+        );
+        assert!(amount > 0, "amount must be positive");
+        from.require_auth();
+        assert_participant(&env, &from);
+
+        let key = if from == get_participant_a(&env) {
+            BAL_A
         assert!(env.ledger().timestamp() < get_expiry(&env), "channel expired");
         assert!(amount > 0, "amount must be positive");
         from.require_auth();
@@ -103,15 +169,24 @@ impl PaymentChannel {
             let bal = get_balance_a(&env);
             env.storage()
                 .instance()
-                .set(&BAL_A, &(bal + amount));
+                .set(&DataKey::BalanceA, &(bal + amount));
         } else if from == participant_b {
             let bal = get_balance_b(&env);
             env.storage()
                 .instance()
-                .set(&BAL_B, &(bal + amount));
+                .set(&DataKey::BalanceB, &(bal + amount));
         } else {
-            panic!("not a participant");
-        }
+            BAL_B
+        };
+        let bal: i128 = env.storage().instance().get(&key).unwrap();
+        let new_bal = bal.checked_add(amount).expect("balance overflow");
+
+        token::Client::new(&env, &get_token(&env)).transfer(
+            &from,
+            env.current_contract_address(),
+            &amount,
+        );
+        env.storage().instance().set(&key, &new_bal);
     }
 
     pub fn submit_state(
@@ -124,24 +199,31 @@ impl PaymentChannel {
         sig_b: BytesN<64>,
     ) {
         assert!(!is_closed(&env), "channel closed");
-        assert!(env.ledger().timestamp() < get_expiry(&env), "channel expired");
-        let participant_a = get_participant_a(&env);
-        let participant_b = get_participant_b(&env);
-        if from != participant_a && from != participant_b {
-            panic!("not a participant");
-        }
-        let stored_seq = get_sequence(&env);
-        assert!(sequence > stored_seq, "sequence must increase");
-        let cur_a = get_balance_a(&env);
-        let cur_b = get_balance_b(&env);
-        let total = cur_a + cur_b;
+        assert!(
+            env.ledger().timestamp() < get_expiry(&env),
+            "channel expired"
+        );
+        from.require_auth();
+        assert_participant(&env, &from);
+        assert!(sequence > get_sequence(&env), "sequence must increase");
         assert!(new_balance_a >= 0 && new_balance_b >= 0, "negative balance");
-        assert!(new_balance_a + new_balance_b == total, "balance mismatch");
-        let msg = build_message(&env, &new_balance_a, &new_balance_b, &sequence);
+        let total = get_balance_a(&env) + get_balance_b(&env);
+        assert!(
+            new_balance_a.checked_add(new_balance_b) == Some(total),
+            "balance mismatch"
+        );
+
+        // Both signatures are required; `ed25519_verify` traps on failure.
+        let msg = build_message(&env, new_balance_a, new_balance_b, sequence);
         let pk_a: BytesN<32> = env.storage().instance().get(&PUB_A).unwrap();
         let pk_b: BytesN<32> = env.storage().instance().get(&PUB_B).unwrap();
         env.crypto().ed25519_verify(&pk_a, &msg, &sig_a);
         env.crypto().ed25519_verify(&pk_b, &msg, &sig_b);
+
+        let storage = env.storage().instance();
+        storage.set(&BAL_A, &new_balance_a);
+        storage.set(&BAL_B, &new_balance_b);
+        storage.set(&SEQ, &sequence);
         env.storage().instance().set(&BAL_A, &new_balance_a);
         env.storage().instance().set(&BAL_B, &new_balance_b);
         env.storage().instance().set(&SEQ, &sequence);
@@ -150,15 +232,25 @@ impl PaymentChannel {
     pub fn close(env: Env, from: Address) {
         assert!(!is_closed(&env), "channel closed");
         from.require_auth();
-        let participant_a = get_participant_a(&env);
-        let participant_b = get_participant_b(&env);
-        if from != participant_a && from != participant_b {
-            panic!("not a participant");
-        }
-        let token = get_token(&env);
+        assert_participant(&env, &from);
+
+        let token = token::Client::new(&env, &get_token(&env));
+        let this = env.current_contract_address();
         let balance_a = get_balance_a(&env);
         let balance_b = get_balance_b(&env);
+
+        // Effects before interactions.
+        let storage = env.storage().instance();
+        storage.set(&CLOSED, &true);
+        storage.set(&BAL_A, &0_i128);
+        storage.set(&BAL_B, &0_i128);
+
         if balance_a > 0 {
+            token.transfer(&this, get_participant_a(&env), &balance_a);
+        }
+        if balance_b > 0 {
+            token.transfer(&this, get_participant_b(&env), &balance_b);
+        }
             token::Client::new(&env, &token).transfer(
                 &env.current_contract_address(),
                 &participant_a,
@@ -172,9 +264,13 @@ impl PaymentChannel {
                 &balance_b,
             );
         }
-        env.storage().instance().set(&CLOSED, &true);
-        env.storage().instance().set(&BAL_A, &0_i128);
-        env.storage().instance().set(&BAL_B, &0_i128);
+        env.storage().instance().set(&DataKey::Closed, &true);
+        env.storage()
+            .instance()
+            .set(&DataKey::BalanceA, &0_i128);
+        env.storage()
+            .instance()
+            .set(&DataKey::BalanceB, &0_i128);
     }
 
     pub fn get_info(env: Env) -> ChannelInfo {
