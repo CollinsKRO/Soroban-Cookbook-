@@ -43,8 +43,6 @@ members = [
     "examples/basics/14-event-filtering",
     "examples/basics/14-fifo-queue",
     "examples/basics/lazy-cache",
-    # Companion to the canonical iterable map example below; kept as a member so
-    # its filter/map/reduce utilities stay built and tested.
     "examples/intermediate/iterable-mappings",
     "examples/intermediate/03-priority-queue",
     "examples/intermediate/03-pause-unpause",
@@ -150,8 +148,6 @@ members = [
     "examples/nfts/04-nft-marketplace",
     "examples/nfts/05-automatic-snapshot-triggers",
     "examples/intermediate/lazy-loading",
-    # Canonical iterable map example referenced by the book and by
-    # examples/intermediate/README.md.
     "examples/intermediate/iterable-mapping",
     "examples/intermediate/storage-pagination",
     "examples/tokens/08-multi-token-balance-manager",
@@ -171,6 +167,7 @@ members = [
     "tests/integration",
     "tests/security",
     "tests/docs-audit",
+    "tests/fuzz",
 ]
 
 [workspace.package]
